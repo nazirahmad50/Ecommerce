@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CBContext.cs" />
+    <Compile Include="Migrations\201907131920480_initialized.cs" />
+    <Compile Include="Migrations\201907131920480_initialized.Designer.cs">
+      <DependentUpon>201907131920480_initialized.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +65,11 @@
       <Project>{12C96B3F-33A4-4AF5-9690-2EC6F826D742}</Project>
       <Name>Ecommerce.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907131920480_initialized.resx">
+      <DependentUpon>201907131920480_initialized.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
