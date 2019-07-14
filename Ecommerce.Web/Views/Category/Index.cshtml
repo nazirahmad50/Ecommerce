@@ -1,0 +1,14 @@
+﻿<!-- a List is used becauase we have passed a list into this views method (Action)-->
+@model List<Ecommerce.Entities.Category> 
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@foreach (var categories in Model)
+{
+    <h1>@categories.Name</h1>
+    <h1>@categories.Description</h1>
+
+}
