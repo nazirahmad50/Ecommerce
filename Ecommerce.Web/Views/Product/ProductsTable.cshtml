@@ -1,0 +1,89 @@
+﻿@model List<Ecommerce.Entities.Product>
+@{
+    ViewBag.Title = "ProductsTable";
+}
+
+<h2>ProductsTable</h2>
+
+<div>
+
+    <form method="post">
+
+        <input id="searchTxt" name="Search" />
+
+        <button type="button" id="searchBtn">Search</button>
+
+    </form>
+    <button type="button" id="newBtn">New</button>
+
+</div>
+
+<div>
+    <table>
+
+        <thead>
+
+            <!--Row tag-->
+            <tr>
+
+                <!--td is a cell-->
+                <td>Product Name</td>
+                <td>Category</td>
+                <td>Price</td>
+                <td>Action</td>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Name</td>
+                    <td>.</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+
+<script>
+
+    // '$' Jquery reference
+    // '#' is used for ids and '.' is used for classes
+    $("#searchBtn").click(function () {
+
+        var searchTxt = $("#searchTxt").val();
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: "/Product/ProductsTable", // Were going to pass data to the 'ProductsTable' action
+            data: { search: searchTxt } // 'search' is the exact paremeter name of the 'ProductsTable' action and we are passing the 'searchTxt' to it
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+</script>
