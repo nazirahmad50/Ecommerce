@@ -46,8 +46,9 @@
                     <td>.</td>
                     <td>@item.Price</td>
                     <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <!--'id' attribute should not hold data, so we created our own elemtent attribute called 'data-id' and passed data of the items id-->
+                        <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
+                        <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
 
 
                     </td>
@@ -85,5 +86,73 @@
                 alert("Fail");
             });
     });
+
+     $("#newBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: "/Product/Create", 
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#actionContainer").html(response);
+            })
+             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                 alert("Fail");
+             });
+     });
+
+    $(".edtBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: "/Product/Edit",
+            data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#actionContainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+        $(".deleteBtn").click(function () {
+
+            var confirmToDelete = confirm("Are you sure you want to delete"); // create a confirm message to the user
+
+            if (confirmToDelete) { // if user clicks yes
+                $.ajax({
+
+                    method: "POST", 
+                    url: "/Product/Delete",
+                    data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
+
+                })
+                    .done(function (response) { // the response returns an html with values
+
+                        // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                        $("#tableDiv").html(response);
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Fail");
+                    });
+            }
+
+
+        });
+
+
+
+
 
 </script>

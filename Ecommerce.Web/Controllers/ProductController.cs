@@ -9,7 +9,7 @@ namespace Ecommerce.Web.Controllers
 {
     public class ProductController : Controller
     {
-        ProductsService productsService = new ProductsService();
+        readonly ProductsService productsService = new ProductsService();
 
         // GET: Product
         public ActionResult Index()
@@ -43,6 +43,34 @@ namespace Ecommerce.Web.Controllers
         {
 
             productsService.SaveProduct(product); // pass the 'category' argument values to the method 'SaveCategory'
+
+            return RedirectToAction("ProductsTable");
+        }
+
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+
+            var product = productsService.GetProduct(id);
+
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Product product)
+        {
+
+            productsService.UpdatepProduct(product); 
+
+            return RedirectToAction("ProductsTable");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+
+            productsService.DeleteProduct(id); 
 
             return RedirectToAction("ProductsTable");
         }

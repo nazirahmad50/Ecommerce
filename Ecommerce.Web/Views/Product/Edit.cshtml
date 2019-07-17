@@ -1,42 +1,44 @@
-﻿
+﻿@model Ecommerce.Entities.Product
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create Product</h2>
+<h2>Edit Product</h2>
 
-<form id="createProduct">
+<form id="editProduct">
+
+    <input type="hidden" name="id" value="@Model.ID" />
 
     <label>Name</label>
-    <input name="Name" />
+    <input name="Name" value="@Model.Name" />
 
     <br />
 
     <label>Description</label>
-    <input name="Description" />
+    <input name="Description" value="@Model.Description" />
 
     <br />
 
     <label>Price</label>
-    <input name="Price" />
+    <input name="Price" value="@Model.Price"/>
 
-    <button id="saveBtn" type="button">Save</button>
+    <button id="updateBtn" type="button">Update</button>
 
 </form>
 
 <script>
 
 
-    $("#saveBtn").click(function () {
+    $("#updateBtn").click(function () {
 
 
         $.ajax({
 
-            method: "POST", 
-            url: "/Product/Create",
-            // 'serialize' will get the values for every input field 
+            method: "POST",
+            url: "/Product/Edit",
+            // 'serialize' will get the values for every input field
             // it will look like this e.g. - Name=p1&Description=None&Price=10.00
-            data: $("#createProduct").serialize() 
+            data: $("#editProduct").serialize()
 
         })
             .done(function (response) { // the response returns an html with values
