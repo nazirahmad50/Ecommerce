@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ecommerce.Services;
+using Ecommerce.Web.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,15 @@ namespace Ecommerce.Web.Controllers
 {
     public class HomeController : Controller
     {
+        readonly CategoriesService categoriesService = new CategoriesService(); // create an object of 'CategoriesService' 
+
         public ActionResult Index()
         {
-            return View();
+            HomeViewModels model = new HomeViewModels(); // create Home view model object
+
+            model.Categories = categoriesService.GetCategories(); // set the categories list in the home view model to the categories receieved from database
+
+            return View(model);
         }
 
         public ActionResult About()

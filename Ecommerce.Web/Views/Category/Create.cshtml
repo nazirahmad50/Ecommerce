@@ -17,6 +17,62 @@
 
     <br />
 
+    <label>Image</label>
+    <input id="ImageURL" name="ImageURL" type="hidden" />
+    <input id="imgUpload" name="Image" type="file" accept=".png, .jpg" />
+
+    <div class="thumb">
+        <img id="categoryImg" />
+
+    </div>
+
+    <br />
+
+
     <button type="submit">Save</button>
 
 </form>
+
+<script>
+
+    $("#imgUpload").change(function () {
+        
+        var formData = new FormData(); // create FormData object to add a file into
+
+        var totalFiles = this.files.length; // 'this' means get which ever element that has the 'change' function applied on and get the total files of that element
+
+        for (var i = 0; i < totalFiles; i++) { // loop through all the files and add them to form data
+
+            var file = this.files[i];
+            formData.append("Photo", file); // append each of the file as 'Photo' to from data
+        }
+
+
+        $.ajax({
+
+            // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
+            method: "POST",
+            url: "/Shared/UploadImage",
+            dataType: "json",
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) { // for this will recieve a Json response because the 'UploadImage' returns a Json Result
+                console.log(response);
+
+                if (response.Success) { // if success if equal to true
+
+                    $("#categoryImg").attr("src", response.ImageUrl); // pass the image url from teh response json to the 'src' attribute of the image tag
+
+                    $("#ImageURL").val(response.ImageUrl); 
+
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+    })
+
+</script>
