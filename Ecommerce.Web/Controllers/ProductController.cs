@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Entities;
 using Ecommerce.Services;
+using Ecommerce.Web.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,7 @@ namespace Ecommerce.Web.Controllers
     public class ProductController : Controller
     {
         readonly ProductsService productsService = new ProductsService();
+
 
         // GET: Product
         public ActionResult Index()
@@ -34,15 +36,30 @@ namespace Ecommerce.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return PartialView();
+
+            CategoriesService categoriesService = new CategoriesService(); // create categories service object
+
+            var categories = categoriesService.GetCategories(); // get a list of all categories
+
+            return PartialView(categories);
         }
 
         // this action method is called when we click on the save button
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(ProductViewModels model)
         {
+             CategoriesService categoriesService = new CategoriesService();
 
-            productsService.SaveProduct(product); // pass the 'category' argument values to the method 'SaveCategory'
+
+            var newProduct = new Product(); // create new product object
+
+            // set all the properties in the 'ProductViewModels' to the properties in the 'Product' (entity)
+            newProduct.Name = model.Name;
+            newProduct.Description = model.Description;
+            newProduct.Price = model.Price;
+            newProduct.Category = categoriesService.GetCategory(model.CategoryId);
+
+            productsService.SaveProduct(newProduct); 
 
             return RedirectToAction("ProductsTable");
         }

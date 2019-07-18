@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Ecommerce.Entities.Category>
 @{
     ViewBag.Title = "Create";
 }
@@ -6,6 +6,20 @@
 <h2>Create Product</h2>
 
 <form id="createProduct">
+
+    <label>Category</label>
+
+    <!--drop down list for category-->
+    <select name="CategoryId"> 
+
+        @foreach (var item in Model)
+        {
+            <option value="@item.ID">@item.Name</option> // categories will be saved to database based on their id
+        }
+
+    </select>
+
+    <br />
 
     <label>Name</label>
     <input name="Name" />

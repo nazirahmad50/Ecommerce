@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
+
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
@@ -14,6 +16,9 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {
+                // keep category unchanged becasue we dont want to create another category with every product that we add
+                context.Entry(product.Category).State = System.Data.Entity.EntityState.Unchanged; 
+
                 context.Products.Add(product); // add 'category' argument to the database 'Categories', will be stored in memory not in database yet
                 context.SaveChanges(); // will save it into the database
             }
@@ -22,11 +27,15 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         public List<Product> GetProducts()
         {
-            using (var context = new CBContext())  
+            using (var context = new CBContext())
             {
-                return context.Products.ToList(); // return the categories from the database as a list
+                // 'Include' method will include the 'Category' for every product
+                return context.Products.Include(x => x.Category).ToList(); // return the Products from the database as a list
 
             }
+  
+      
+
 
         }
 

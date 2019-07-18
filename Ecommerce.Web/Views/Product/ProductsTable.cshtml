@@ -43,7 +43,17 @@
                 <tr>
 
                     <td>@item.Name</td>
-                    <td>.</td>
+                    <td>
+                        @if (item.Category != null)
+                        {
+                            <text>@item.Category.Name</text> // show the category name as text, if we dont use text will get an error
+                        }
+                        else
+                        {
+                            <text>-</text>
+
+                        }
+                    </td>
                     <td>@item.Price</td>
                     <td>
                         <!--'id' attribute should not hold data, so we created our own elemtent attribute called 'data-id' and passed data of the items id-->
