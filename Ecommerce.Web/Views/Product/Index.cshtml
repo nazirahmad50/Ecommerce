@@ -3,19 +3,24 @@
     ViewBag.Title = "Index";
 }
 
-    <div id="tableDiv">
-        <!--This 'RenderAction' will render the 'ProductsTable' view in this Index View -->
-        @{
+    <div class="container">
+
+        <div id="tableDiv">
+            <!--This 'RenderAction' will render the 'ProductsTable' view in this Index View -->
+            @{
 
 
-            Html.RenderAction("ProductsTable");
+                Html.RenderAction("ProductsTable");
 
-        }
+            }
+        </div>
+
+        <hr /> <!--horizontle line-->
+
+        <div id="actionContainer">
+
+
+
+        </div>
+
     </div>
-
-<div id="actionContainer">
-
-
-
-</div>
-

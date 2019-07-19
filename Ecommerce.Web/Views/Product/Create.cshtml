@@ -6,37 +6,36 @@
 <h2>Create Product</h2>
 
 <form id="createProduct">
+    <div class="form-group">
+        <label>Category</label>
 
-    <label>Category</label>
+        <!--drop down list for category-->
+        <select class="form-control" name="CategoryId">
 
-    <!--drop down list for category-->
-    <select name="CategoryId"> 
+            @foreach (var item in Model)
+            {
+                <option value="@item.ID">@item.Name</option>// categories will be saved to database based on their id
+            }
 
-        @foreach (var item in Model)
-        {
-            <option value="@item.ID">@item.Name</option> // categories will be saved to database based on their id
-        }
+        </select>
+    </div>
+    <div class="form-group">
 
-    </select>
-
-    <br />
-
-    <label>Name</label>
-    <input name="Name" />
-
-    <br />
-
-    <label>Description</label>
-    <input name="Description" />
-
-    <br />
-
-    <label>Price</label>
-    <input name="Price" />
-
-    <button id="saveBtn" type="button">Save</button>
-
+        <label>Name</label>
+        <input class="form-control" name="Name" />
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <input class="form-control" name="Description" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input class="form-control" name="Price" />
+    </div>
+    <button id="saveBtn" class="btn btn-primary" type="button">Save</button>
 </form>
+
+
 
 <script>
 
