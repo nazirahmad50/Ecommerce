@@ -11,5 +11,7 @@ namespace Ecommerce.Entities
         public string ImageURL { get; set; }
 
         public List<Product> Products { get; set; } // there can be multiple products in a category
+
+        public bool isFeatured { get; set; } // bool type will be stored as bit in database
     }
 }

@@ -16,7 +16,7 @@ namespace Ecommerce.Web.Controllers
         {
             HomeViewModels model = new HomeViewModels(); // create Home view model object
 
-            model.Categories = categoriesService.GetCategories(); // set the categories list in the home view model to the categories receieved from database
+            model.FeaturedCategories = categoriesService.GetFeaturedCategories(); // set the categories list in the home view model to the categories receieved from database
 
             return View(model);
         }

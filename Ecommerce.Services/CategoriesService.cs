@@ -30,6 +30,16 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
+        public List<Category> GetFeaturedCategories()
+        {
+            using (var context = new CBContext())
+            {
+                // return the categories from the database where 'isFeatured' is equal to true and 'ImageURL' is not null, as a list
+                return context.Categories.Where(x=>x.isFeatured && x.ImageURL != null).ToList(); 
+            }
+
+        }
+
         public Category GetCategory(int ID)
         {
             using (var context = new CBContext())
