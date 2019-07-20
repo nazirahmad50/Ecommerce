@@ -170,25 +170,39 @@
 
     $(".deleteBtn").click(function () {
 
-        var confirmToDelete = confirm("Are you sure you want to delete"); // create a confirm message to the user
+        Swal.fire({
+            title: 'Confirm?',
+            text: "Are you sure you want to delete!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
 
-        if (confirmToDelete) { // if user clicks yes
-            $.ajax({
+                    method: "POST",
+                    url: "/Product/Delete",
+                    data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
 
-                method: "POST",
-                url: "/Product/Delete",
-                data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
-
-            })
-                .done(function (response) { // the response returns an html with values
-
-                    // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
-                    $("#tableDiv").html(response);
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Fail");
-                });
-        }
+                    .done(function (response) { // the response returns an html with values
+
+                        // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                        $("#tableDiv").html(response);
+
+                        Swal.fire("Product Deleted Successfuly");
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Fail");
+                    });
+            }
+        })
+
+
+
+        
 
 
     });

@@ -162,21 +162,40 @@
 
     $(".deleteBtn").click(function () {
 
+        Swal.fire({
+            title: 'Confirm?',
+            text: "Are you sure you want to delete!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
 
-        $.ajax({
+                $.ajax({
 
-            method: "POST",
-            url: "/Category/Delete",
-            data: { id: $(this).attr("data-id") }
+                    method: "POST",
+                    url: "/Category/Delete",
+                    data: { id: $(this).attr("data-id") }
 
+                })
+                    .done(function (response) {
+
+                        $("#tableDiv").html(response);
+
+                        Swal.fire("Category Deleted Successfuly");
+
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Fail");
+                    });
+
+
+            }
         })
-            .done(function (response) {
 
-                $("#tableDiv").html(response);
-            })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Fail");
-            });
+
 
 
     })
