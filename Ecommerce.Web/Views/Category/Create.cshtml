@@ -5,35 +5,55 @@
 
 <h2>Create Category</h2>
 
-<form method="post">
+<form id="addCategory">
+    <div class="row">
 
-    <label>Name</label>
-    <input name="Name" />
 
-    <br />
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" name="Name" />
 
-    <label>Description</label>
-    <input name="Description" />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" name="Description" />
 
-    <br />
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input class="form-control" id="ImageURL" name="ImageURL" type="hidden" />
+                <input class="form-control" id="imgUpload" name="Image" type="file" accept=".png, .jpg" />
 
-    <label>Image</label>
-    <input id="ImageURL" name="ImageURL" type="hidden" />
-    <input id="imgUpload" name="Image" type="file" accept=".png, .jpg" />
+            </div>
+            <div class="form-group">
+                <label>Is Featured?</label>
 
-    <div class="thumb">
-        <img id="categoryImg" />
+                <div class="input-group">
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="True" /> True
 
+                    </div>
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="False" /> False
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="thumb">
+                <img id="categoryImg" class="img-thumbnail img-fluid" />
+
+            </div>
+
+        </div>
     </div>
 
-    <br />
-
-    <label>Is Featured?</label>
-    <input name="isFeatured" type="radio" value="True" /> True
-    <input name="isFeatured" type="radio" value="False" /> False
-
-
-    <button type="submit">Save</button>
+  
+    <button id="updateBtn" type="button">Add</button>
 
 </form>
 
@@ -78,5 +98,27 @@
             });
 
     })
+
+    $("#updateBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "POST", 
+            url: "/Category/Create",
+            data: $("#addCategory").serialize() 
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                $("#tableDiv").html(response);
+                $("#createForm").html(""); // empty the form so it ill disapear from the view
+
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
 
 </script>

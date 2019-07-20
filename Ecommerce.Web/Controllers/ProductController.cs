@@ -20,7 +20,7 @@ namespace Ecommerce.Web.Controllers
         }
 
         public ActionResult ProductsTable(string search) // the value for the 'search' parameter will be recieved through ajax
-        {
+       {
             var products = productsService.GetProducts();
 
             if (!string.IsNullOrEmpty(search)) // if 'search' parameter is not null or empty

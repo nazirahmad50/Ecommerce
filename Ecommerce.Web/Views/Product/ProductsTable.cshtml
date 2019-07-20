@@ -138,6 +138,8 @@
 
                 // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
                 $("#actionContainer").html(response);
+
+                focusAction();
             })
              .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                  alert("Fail");
@@ -190,6 +192,11 @@
         });
 
 
+    function focusAction() {
+        $("html, body").animate({
+            scrollTop: $("#actionContainer").offset().top - 100
+        }, 1000);
+    }
 
 
 

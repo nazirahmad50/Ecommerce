@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Ecommerce.Web.ViewModels;
 
 namespace Ecommerce.Web.Controllers
 {
@@ -16,15 +17,35 @@ namespace Ecommerce.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var categories = categoriesService.GetCategories(); // call the 'GetCategories' from categories service and set it to the variable 'categories'
 
-            return View(categories); // pass the categories list to the view
+            return View(); 
+        }
+
+        public ActionResult CategoriesTable(string search)
+        {
+
+            CategorySearchViewModels model = new CategorySearchViewModels();
+
+             model.Categories = categoriesService.GetCategories();
+            
+
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                model.SearchTerm = search;
+                model.Categories = model.Categories.Where(x => x.Name != null && x.Name.ToLower().Contains(model.SearchTerm.ToLower())).ToList();
+            }
+
+
+            return PartialView("_CategoriesTable", model);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+
+
+            return PartialView();
         }
 
         [HttpPost]
@@ -33,7 +54,7 @@ namespace Ecommerce.Web.Controllers
 
             categoriesService.SaveCategory(category); // pass the 'category' argument values to the method 'SaveCategory'
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CategoriesTable");
         }
 
 
@@ -43,7 +64,7 @@ namespace Ecommerce.Web.Controllers
             var category = categoriesService.GetCategory(id); // call the method 'GetCategory' from categories service and set it to the variable 'categories'
 
 
-            return View(category);
+            return PartialView(category);
         }
 
         [HttpPost]
@@ -52,25 +73,16 @@ namespace Ecommerce.Web.Controllers
 
             categoriesService.UpdateCategory(category); // pass the 'category' argument values to the method 'UpdateCategory'
 
-            return RedirectToAction("Index"); // redirect to Index View
+            return RedirectToAction("CategoriesTable"); // redirect to Index View
         }
 
-
-        [HttpGet]
-        public ActionResult Delete(int id) // this 'id' name is same as the id name in the routes table
-        {
-            var category = categoriesService.GetCategory(id); // call the 'GetCategories' from categories service and set it to the variable 'categories'
-
-
-            return View(category);
-        }
 
         [HttpPost]
-        public ActionResult Delete(Category category)
+        public ActionResult Delete(int id)
         {
-            categoriesService.DeleteCategory(category.ID); // pass the 'category' id value to the method 'DeleteCategory'
+            categoriesService.DeleteCategory(id); // pass the  id value to the method 'DeleteCategory'
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CategoriesTable");
         }
     }
 }

@@ -1,13 +1,32 @@
-﻿<!-- a List is used becauase we have passed a list into this views method (Action)-->
-@model List<Ecommerce.Entities.Category> 
+﻿
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-@foreach (var categories in Model)
-{
-    <h1>@categories.Name</h1>
+<br />
+<h2 class="text-center">CATEGORIES</h2>
 
-}
+<div class="container">
+
+
+
+    <div id="tableDiv">
+
+        @{
+            Html.RenderAction("CategoriesTable");
+        }
+
+    </div>
+
+    <hr />
+
+    <div id="createForm">
+
+
+    </div>
+
+
+</div>
+
+

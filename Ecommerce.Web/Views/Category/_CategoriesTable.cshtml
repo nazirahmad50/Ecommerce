@@ -1,0 +1,191 @@
+﻿@model  Ecommerce.Web.ViewModels.CategorySearchViewModels
+@{
+    ViewBag.Title = "CategoriesTable";
+}
+
+
+<div>
+
+    <form method="post">
+
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <label>Search</label>
+                    <input class="form-control" id="searchTxt" name="Search" value="@Model.SearchTerm" />
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+
+                    <label>Action</label>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="form-control btn btn-primary" type="button" id="searchBtn">Search</button>
+                        </div>
+                        <div class="col-md-6">
+
+                            <button class="form-control btn btn-primary" type="button" id="newBtn">New</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+</div>
+
+<table class="table table-striped">
+
+    <thead>
+
+        <tr>
+            <td>Category</td>
+            <td>Products</td>
+            <td>Action</td>
+
+
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+        @if (Model.Categories != null && Model.Categories.Count > 0)
+        {
+
+
+
+            foreach (var item in Model.Categories)
+            {
+
+
+                <tr>
+
+                    <td>@item.Name</td>
+                    <td>
+                        @item.Products.Count
+                    </td>
+                    <td>
+
+                        <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
+                        <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
+
+                    </td>
+
+
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<script>
+
+    $("#searchBtn").click(function () {
+
+        var searchTxt = $("#searchTxt").val();
+
+        $.ajax({
+
+            method: "GET",
+            url: "/Category/CategoriesTable",
+            data: { search: searchTxt }
+
+        })
+            .done(function (response) {
+
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+    $("#newBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "GET",
+            url: "/Category/Create",
+
+        })
+            .done(function (response) {
+
+                $("#createForm").html(response);
+
+                focusAction();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+
+    $(".edtBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "GET",
+            url: "/Category/Edit",
+            data: { id: $(this).attr("data-id") }
+
+        })
+            .done(function (response) {
+
+                $("#createForm").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+    $(".deleteBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "POST",
+            url: "/Category/Delete",
+            data: { id: $(this).attr("data-id") }
+
+        })
+            .done(function (response) {
+
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+    function focusAction() {
+        $("html, body").animate({
+            scrollTop: $("#createForm").offset().top - 100
+        }, 1000);
+    }
+
+
+</script>

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
+
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
@@ -24,7 +26,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         {
             using (var context = new CBContext())  
             {
-                return context.Categories.ToList(); // return the categories from the database as a list
+                return context.Categories.Include(x => x.Products).ToList(); // return the categories from the database as a list
 
             }
 

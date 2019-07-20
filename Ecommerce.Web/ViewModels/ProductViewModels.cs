@@ -13,5 +13,6 @@ namespace Ecommerce.Web.ViewModels
 
         public int CategoryId { get; set; }
 
+
     }
 }

@@ -6,25 +6,43 @@
 <h2>Edit Product</h2>
 
 <form id="editProduct">
+    <input type="hidden" name="ID" value="@Model.ID" />
 
-    <input type="hidden" name="id" value="@Model.ID" />
+    <div class="row">
 
-    <label>Name</label>
-    <input name="Name" value="@Model.Name" />
 
-    <br />
+        <div class="col-md-8">
 
-    <label>Description</label>
-    <input name="Description" value="@Model.Description" />
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" name="Name" value="@Model.Name" />
 
-    <br />
+            </div>
 
-    <label>Price</label>
-    <input name="Price" value="@Model.Price"/>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" name="Description" value="@Model.Description" />
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Price</label>
+                <input class="form-control" name="Price" value="@Model.Price" />
+
+            </div>
+
+
+        </div>
+
+
+    </div>
 
     <button id="updateBtn" type="button">Update</button>
 
 </form>
+
+
 
 <script>
 
