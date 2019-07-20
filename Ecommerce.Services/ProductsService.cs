@@ -25,6 +25,9 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
+        /// <summary>
+        /// Get all products with Category included
+        /// </summary>
         public List<Product> GetProducts()
         {
             using (var context = new CBContext())
@@ -34,10 +37,22 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
             }
   
-      
-
 
         }
+
+        /// <summary>
+        /// Get Products that are added to the cart
+        /// </summary>
+        public List<Product> GetProducts(List<int> IDs)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.Where(x => IDs.Contains(x.ID)).ToList(); // return products where param 'IDs' contain product 'id' as a list
+
+            }
+
+        }
+
 
         public Product GetProduct(int ID)
         {
@@ -48,6 +63,8 @@ namespace Ecommerce.Services // services are used to communicate between the Web
             }
 
         }
+
+  
 
         public void UpdatepProduct(Product product)
         {

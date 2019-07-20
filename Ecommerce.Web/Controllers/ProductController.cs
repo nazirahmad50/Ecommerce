@@ -13,7 +13,6 @@ namespace Ecommerce.Web.Controllers
         readonly ProductsService productsService = new ProductsService();
 
 
-        // GET: Product
         public ActionResult Index()
         {
             return View();

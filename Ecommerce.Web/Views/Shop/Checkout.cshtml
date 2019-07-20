@@ -1,0 +1,33 @@
+﻿@model Ecommerce.Web.ViewModels.CheckoutViewModels
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<h2>Checkout</h2>
+
+
+@if (Model != null)
+{
+    if (Model.CartProducts != null && Model.CartProducts.Count > 0)
+    {
+        foreach (var item in Model.CartProducts)
+        {
+            var productQuantity = Model.CartProductIds.Where(x => x == item.ID).Count(); // get the count of where the ids in list 'CartProductIds' equal to the current product id
+
+            <div> Name: @item.Name - Price: @item.Price Quantity: @productQuantity Total Price: @(item.Price * productQuantity)</div>
+
+        }
+
+        <div>
+            Total: @Model.CartProducts.Sum(x => x.Price * Model.CartProductIds.Where(c => c == x.ID).Count()) <!--multiply the price of each pproduct by the count of its ids (quantity) -->
+        </div>
+
+    }
+    else
+    {
+        <div>
+            No Products in cart
+        </div>
+
+    }
+}
