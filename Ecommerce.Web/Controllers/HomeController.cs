@@ -13,9 +13,10 @@ namespace Ecommerce.Web.Controllers
 
         public ActionResult Index()
         {
-            HomeViewModels model = new HomeViewModels(); // create Home view model object
-
-            model.FeaturedCategories = CategoriesService.GetFeaturedCategories(); // set the categories list in the home view model to the categories receieved from database
+            HomeViewModels model = new HomeViewModels
+            {
+                FeaturedCategories = CategoriesService.ClassObject.GetFeaturedCategories() // set the categories list in the home view model to the categories receieved from database
+            }; 
 
             return View(model);
         }

@@ -10,9 +10,30 @@ using System.Data.Entity;
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
-    public static class CategoriesService
+    public class CategoriesService
     {
-        public static void SaveCategory(Category category)
+
+        // create a signleton pattern
+        public static CategoriesService ClassObject {
+            get {
+                // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
+                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new CategoriesService();
+
+                // if its not null just return 'PrivateInMemoryObject'
+                return PrivateInMemoryObject;
+            }
+        }
+
+        private static CategoriesService PrivateInMemoryObject { get; set; }
+
+        private CategoriesService()
+        {
+
+        }
+
+
+
+        public  void SaveCategory(Category category)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {
@@ -22,7 +43,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static List<Category> GetCategories()
+        public  List<Category> GetCategories()
         {
             using (var context = new CBContext())  
             {
@@ -32,7 +53,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static List<Category> GetFeaturedCategories()
+        public  List<Category> GetFeaturedCategories()
         {
             using (var context = new CBContext())
             {
@@ -42,7 +63,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static Category GetCategory(int ID)
+        public  Category GetCategory(int ID)
         {
             using (var context = new CBContext())
             {
@@ -52,7 +73,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static void UpdateCategory(Category category)
+        public  void UpdateCategory(Category category)
         {
             using (var context = new CBContext())
             {
@@ -63,7 +84,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static void DeleteCategory(int ID)
+        public  void DeleteCategory(int ID)
         {
             using (var context = new CBContext())
             {

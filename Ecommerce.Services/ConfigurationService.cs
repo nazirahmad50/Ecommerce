@@ -8,9 +8,30 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Services
 {
-    public static class ConfigurationService
+    public class ConfigurationService
     {
-        public static Config GetConfig(string key)
+        // create a signleton pattern
+        public static ConfigurationService ClassObject
+        {
+            get
+            {
+                // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
+                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new ConfigurationService();
+
+                // if its not null just return 'PrivateInMemoryObject'
+                return PrivateInMemoryObject;
+            }
+        }
+
+        private static ConfigurationService PrivateInMemoryObject { get; set; }
+
+        private ConfigurationService()
+        {
+
+        }
+
+
+        public Config GetConfig(string key)
         {
             using (var context = new CBContext())
             {

@@ -10,9 +10,31 @@ using System.Data.Entity;
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
-    public static class ProductsService
+    public class ProductsService
     {
-        public static void SaveProduct(Product product)
+
+        // create a signleton pattern
+        public static ProductsService ClassObject
+        {
+            get
+            {
+                // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
+                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new ProductsService();
+
+                // if its not null just return 'PrivateInMemoryObject'
+                return PrivateInMemoryObject;
+            }
+        }
+
+        private static ProductsService PrivateInMemoryObject { get; set; }
+
+        private ProductsService()
+        {
+
+        }
+
+
+        public void SaveProduct(Product product)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {
@@ -28,7 +50,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         /// <summary>
         /// Get all products with Category included
         /// </summary>
-        public static List<Product> GetProducts()
+        public List<Product> GetProducts()
         {
             using (var context = new CBContext())
             {
@@ -43,7 +65,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         /// <summary>
         /// Get Products that are added to the cart
         /// </summary>
-        public static List<Product> GetProducts(List<int> IDs)
+        public List<Product> GetProducts(List<int> IDs)
         {
             using (var context = new CBContext())
             {
@@ -54,7 +76,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         }
 
 
-        public static Product GetProduct(int ID)
+        public Product GetProduct(int ID)
         {
             using (var context = new CBContext())
             {
@@ -66,7 +88,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
   
 
-        public static void UpdatepProduct(Product product)
+        public void UpdatepProduct(Product product)
         {
             using (var context = new CBContext())
             {
@@ -77,7 +99,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public static void DeleteProduct(int ID)
+        public void DeleteProduct(int ID)
         {
             using (var context = new CBContext())
             {
