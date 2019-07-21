@@ -10,9 +10,9 @@ using System.Data.Entity;
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
-    public class CategoriesService
+    public static class CategoriesService
     {
-        public void SaveCategory(Category category)
+        public static void SaveCategory(Category category)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {
@@ -22,7 +22,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public List<Category> GetCategories()
+        public static List<Category> GetCategories()
         {
             using (var context = new CBContext())  
             {
@@ -32,7 +32,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public List<Category> GetFeaturedCategories()
+        public static List<Category> GetFeaturedCategories()
         {
             using (var context = new CBContext())
             {
@@ -42,7 +42,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public Category GetCategory(int ID)
+        public static Category GetCategory(int ID)
         {
             using (var context = new CBContext())
             {
@@ -52,7 +52,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public void UpdateCategory(Category category)
+        public static void UpdateCategory(Category category)
         {
             using (var context = new CBContext())
             {
@@ -63,7 +63,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public void DeleteCategory(int ID)
+        public static void DeleteCategory(int ID)
         {
             using (var context = new CBContext())
             {

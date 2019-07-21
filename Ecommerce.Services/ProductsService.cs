@@ -10,9 +10,9 @@ using System.Data.Entity;
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
 {
-    public class ProductsService
+    public static class ProductsService
     {
-        public void SaveProduct(Product product)
+        public static void SaveProduct(Product product)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {
@@ -28,7 +28,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         /// <summary>
         /// Get all products with Category included
         /// </summary>
-        public List<Product> GetProducts()
+        public static List<Product> GetProducts()
         {
             using (var context = new CBContext())
             {
@@ -43,7 +43,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         /// <summary>
         /// Get Products that are added to the cart
         /// </summary>
-        public List<Product> GetProducts(List<int> IDs)
+        public static List<Product> GetProducts(List<int> IDs)
         {
             using (var context = new CBContext())
             {
@@ -54,7 +54,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         }
 
 
-        public Product GetProduct(int ID)
+        public static Product GetProduct(int ID)
         {
             using (var context = new CBContext())
             {
@@ -66,7 +66,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
   
 
-        public void UpdatepProduct(Product product)
+        public static void UpdatepProduct(Product product)
         {
             using (var context = new CBContext())
             {
@@ -77,7 +77,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public void DeleteProduct(int ID)
+        public static void DeleteProduct(int ID)
         {
             using (var context = new CBContext())
             {

@@ -12,8 +12,10 @@ namespace Ecommerce.Web.Controllers
         public JsonResult UploadImage() // this method will return 'Json' where as 'ActionResult' returns HTML
         {
 
-            JsonResult result = new JsonResult(); // create new json result object
-            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet; // MVC doesnt allow for Json without this json request behavior
+            JsonResult result = new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet // MVC doesnt allow for Json without this json request behavior
+            }; 
 
             try
             {

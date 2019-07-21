@@ -10,7 +10,6 @@ namespace Ecommerce.Web.Controllers
 {
     public class ProductController : Controller
     {
-        readonly ProductsService productsService = new ProductsService();
 
 
         public ActionResult Index()
@@ -20,7 +19,7 @@ namespace Ecommerce.Web.Controllers
 
         public ActionResult ProductsTable(string search) // the value for the 'search' parameter will be recieved through ajax
        {
-            var products = productsService.GetProducts();
+            var products = ProductsService.GetProducts();
 
             if (!string.IsNullOrEmpty(search)) // if 'search' parameter is not null or empty
             {
@@ -36,9 +35,8 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Create()
         {
 
-            CategoriesService categoriesService = new CategoriesService(); // create categories service object
 
-            var categories = categoriesService.GetCategories(); // get a list of all categories
+            var categories = CategoriesService.GetCategories(); // get a list of all categories
 
             return PartialView(categories);
         }
@@ -47,18 +45,18 @@ namespace Ecommerce.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProductViewModels model)
         {
-             CategoriesService categoriesService = new CategoriesService();
 
 
-            var newProduct = new Product(); // create new product object
+            var newProduct = new Product
+            {
+                // set all the properties in the 'ProductViewModels' to the properties in the 'Product' (entity)
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Category = CategoriesService.GetCategory(model.CategoryId)
+            }; 
 
-            // set all the properties in the 'ProductViewModels' to the properties in the 'Product' (entity)
-            newProduct.Name = model.Name;
-            newProduct.Description = model.Description;
-            newProduct.Price = model.Price;
-            newProduct.Category = categoriesService.GetCategory(model.CategoryId);
-
-            productsService.SaveProduct(newProduct); 
+            ProductsService.SaveProduct(newProduct); 
 
             return RedirectToAction("ProductsTable");
         }
@@ -68,7 +66,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Edit(int id)
         {
 
-            var product = productsService.GetProduct(id);
+            var product = ProductsService.GetProduct(id);
 
             return PartialView(product);
         }
@@ -77,7 +75,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Edit(Product product)
         {
 
-            productsService.UpdatepProduct(product); 
+            ProductsService.UpdatepProduct(product); 
 
             return RedirectToAction("ProductsTable");
         }
@@ -86,7 +84,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Delete(int id)
         {
 
-            productsService.DeleteProduct(id); 
+            ProductsService.DeleteProduct(id); 
 
             return RedirectToAction("ProductsTable");
         }

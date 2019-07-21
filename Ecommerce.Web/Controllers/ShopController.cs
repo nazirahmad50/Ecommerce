@@ -10,7 +10,6 @@ namespace Ecommerce.Web.Controllers
 {
     public class ShopController : Controller
     {
-        ProductsService productsService = new ProductsService();
 
         public ActionResult Checkout()
         {
@@ -25,7 +24,7 @@ namespace Ecommerce.Web.Controllers
                 // then select those products and convert them to int and return them as list
                model.CartProductIds =  cartProductCokkie.Value.Split('-').Select(x => int.Parse(x)).ToList(); ;
 
-                model.CartProducts = productsService.GetProducts(model.CartProductIds); // get products from database based on the list of product ids
+                model.CartProducts = ProductsService.GetProducts(model.CartProductIds); // get products from database based on the list of product ids
 
 
             }

@@ -10,13 +10,12 @@ namespace Ecommerce.Web.Controllers
 {
     public class HomeController : Controller
     {
-        readonly CategoriesService categoriesService = new CategoriesService(); // create an object of 'CategoriesService' 
 
         public ActionResult Index()
         {
             HomeViewModels model = new HomeViewModels(); // create Home view model object
 
-            model.FeaturedCategories = categoriesService.GetFeaturedCategories(); // set the categories list in the home view model to the categories receieved from database
+            model.FeaturedCategories = CategoriesService.GetFeaturedCategories(); // set the categories list in the home view model to the categories receieved from database
 
             return View(model);
         }
