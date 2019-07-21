@@ -101,7 +101,9 @@
         $.ajax({
 
             method: "GET",
-            url: "/Category/CategoriesTable",
+            // use UrlHelper method called 'Action' which takes the action first and then the controller
+            // purpose of this is that we can customize this url like change it to '/Categories/All' which is done in 'RouteConfig'
+            url: '@Url.Action("CategoriesTable", "Category")', 
             data: { search: searchTxt }
 
         })
@@ -122,7 +124,7 @@
         $.ajax({
 
             method: "GET",
-            url: "/Category/Create",
+            url: '@Url.Action("Create", "Category")', 
 
         })
             .done(function (response) {
@@ -145,7 +147,7 @@
         $.ajax({
 
             method: "GET",
-            url: "/Category/Edit",
+            url: '@Url.Action("Edit", "Category")', 
             data: { id: $(this).attr("data-id") }
 
         })
@@ -176,7 +178,7 @@
                 $.ajax({
 
                     method: "POST",
-                    url: "/Category/Delete",
+                    url: '@Url.Action("Delete", "Category")', 
                     data: { id: $(this).attr("data-id") }
 
                 })

@@ -113,7 +113,7 @@
         $.ajax({
 
             method: "GET", // By default the method is always 'GET'
-            url: "/Product/ProductsTable", // Were going to pass data to the 'ProductsTable' action
+            url: '@Url.Action("ProductsTable", "Product")', 
             data: { search: searchTxt } // 'search' is the exact paremeter name of the 'ProductsTable' action and we are passing the 'searchTxt' to it
 
         })
@@ -133,7 +133,7 @@
         $.ajax({
 
             method: "GET", // By default the method is always 'GET'
-            url: "/Product/Create",
+            url: '@Url.Action("Create", "Product")', 
 
         })
             .done(function (response) { // the response returns an html with values
@@ -154,7 +154,7 @@
         $.ajax({
 
             method: "GET", // By default the method is always 'GET'
-            url: "/Product/Edit",
+            url: '@Url.Action("Edit", "Product")', 
             data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
 
         })
@@ -183,7 +183,7 @@
                 $.ajax({
 
                     method: "POST",
-                    url: "/Product/Delete",
+                    url: '@Url.Action("Delete", "Product")', 
                     data: { id: $(this).attr("data-id") } // which ever button is clicked get that buttons value from its attribute called 'data-id"'
 
                 })

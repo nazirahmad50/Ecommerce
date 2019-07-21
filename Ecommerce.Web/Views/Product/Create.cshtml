@@ -46,7 +46,7 @@
         $.ajax({
 
             method: "POST", 
-            url: "/Product/Create",
+            url: '@Url.Action("Create", "Product")', 
             // 'serialize' will get the values for every input field 
             // it will look like this e.g. - Name=p1&Description=None&Price=10.00
             data: $("#createProduct").serialize() 

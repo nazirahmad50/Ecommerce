@@ -87,7 +87,7 @@
 
             // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
             method: "POST",
-            url: "/Shared/UploadImage",
+            url: '@Url.Action("UploadImage", "Shared")', 
             dataType: "json",
             data: formData,
             contentType: false,
@@ -116,7 +116,7 @@
         $.ajax({
 
             method: "POST",
-            url: "/Category/Edit",
+            url: '@Url.Action("Edit", "Category")', 
             data: $("#editProduct").serialize()
 
         })

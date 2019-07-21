@@ -53,7 +53,7 @@
     </div>
 
   
-    <button id="updateBtn" type="button">Add</button>
+    <button id="addBtn" type="button">Add</button>
 
 </form>
 
@@ -76,7 +76,7 @@
 
             // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
             method: "POST",
-            url: "/Shared/UploadImage",
+            url: '@Url.Action("UploadImage", "Shared")', 
             dataType: "json",
             data: formData,
             contentType: false,
@@ -99,13 +99,13 @@
 
     })
 
-    $("#updateBtn").click(function () {
+    $("#addBtn").click(function () {
 
 
         $.ajax({
 
             method: "POST", 
-            url: "/Category/Create",
+            url: '@Url.Action("Create", "Category")', 
             data: $("#addCategory").serialize() 
 
         })
