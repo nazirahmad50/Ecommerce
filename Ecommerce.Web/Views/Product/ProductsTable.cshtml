@@ -1,4 +1,4 @@
-﻿@model List<Ecommerce.Entities.Product>
+﻿@model Ecommerce.Web.ViewModels.ProductTablesViewModels
 @{
     ViewBag.Title = "ProductsTable";
 }
@@ -66,7 +66,10 @@
 
         <tbody>
 
-            @foreach (var item in Model)
+            @if (Model.Products != null && Model.Products.Count > 0)
+            {
+
+            foreach (var item in Model.Products)
             {
                 <tr>
 
@@ -94,15 +97,59 @@
                     </td>
 
                 </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                     <td class="text-danger" colspan="4">No Products Found</td>
+                </tr>
             }
 
         </tbody>
 
     </table>
+
+    <div>
+
+        @if (Model.pageNo != 1)
+        {
+            <button class="pageBtns" data-pageNo="@(Model.pageNo - 1)">Previous</button>
+
+        }
+
+        <button class="pageBtns" data-pageNo="@(Model.pageNo + 1)">Next</button>
+
+    </div>
+
 </div>
 
 
 <script>
+
+    $(".pageBtns").click(function () {
+
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: '@Url.Action("ProductsTable", "Product")',
+            data: {pageNo: $(this).attr("data-pageNo") }
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#tableDiv").html(response);
+
+                focusAction();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+  
 
     // '$' Jquery reference
     // '#' is used for ids and '.' is used for classes
@@ -200,12 +247,9 @@
             }
         })
 
-
-
-        
-
-
     });
+
+
 
      var products = [];
      $(".addCart").click(function () {

@@ -50,12 +50,15 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         /// <summary>
         /// Get all products with Category included
         /// </summary>
-        public List<Product> GetProducts()
+        public List<Product> GetProducts(int pageNo)
         {
+            int pageSize = 10;
+
             using (var context = new CBContext())
             {
                 // 'Include' method will include the 'Category' for every product
-                return context.Products.Include(x => x.Category).ToList(); // return the Products from the database as a list
+                
+                return context.Products.OrderBy(x =>x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList(); 
 
             }
   
