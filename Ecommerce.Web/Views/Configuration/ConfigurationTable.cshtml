@@ -1,0 +1,137 @@
+﻿@model List<Ecommerce.Entities.Config>
+@{
+    ViewBag.Title = "ConfigurationTable";
+}
+
+
+<div>
+
+<form method="post">
+
+    <div class="row">
+
+        <div class="col-md-8">
+            <div class="form-group">
+
+                <label>Search</label>
+                <input class="form-control" id="searchTxt" name="Search"  />
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+
+                <label>Action</label>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="form-control btn btn-primary" type="button" id="searchBtn">Search</button>
+                    </div>
+                
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+</div>
+
+<table class="table table-striped">
+
+    <thead>
+
+        <tr>
+            <td>Type</td>
+            <td>Value</td>
+            <td>Action</td>
+
+
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+        @if (Model != null)
+        {
+
+            foreach (var item in Model)
+            {
+
+
+                <tr>
+
+                    <td>@item.Key</td>
+                    <td>
+                        @item.Value
+                    </td>
+                    <td>
+
+                        <button class="edtBtn" data-id="@item.Key" type="button">Edit</button>
+
+                    </td>
+
+
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<script>
+
+    $("#searchBtn").click(function () {
+
+        var searchTxt = $("#searchTxt").val();
+
+        $.ajax({
+
+            method: "GET",
+            url: '@Url.Action("ConfigurationTable", "Configuration")', 
+            data: { search: searchTxt }
+
+        })
+            .done(function (response) {
+
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+
+
+    $(".edtBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "GET",
+            url: '@Url.Action("Edit", "Configuration")', 
+            data: { key: $(this).attr("data-id") }
+
+        })
+            .done(function (response) {
+
+                $("#Form").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+    })
+
+
+
+</script>

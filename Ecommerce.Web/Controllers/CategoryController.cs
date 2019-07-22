@@ -25,7 +25,7 @@ namespace Ecommerce.Web.Controllers
 
             CategorySearchViewModels model = new CategorySearchViewModels
             {
-                Categories = CategoriesService.ClassObject.GetCategories()
+                Categories = CategoriesService.Instance.GetCategories()
             };
 
 
@@ -52,7 +52,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Create(Category category)
         {
 
-            CategoriesService.ClassObject.SaveCategory(category); // pass the 'category' argument values to the method 'SaveCategory'
+            CategoriesService.Instance.SaveCategory(category); // pass the 'category' argument values to the method 'SaveCategory'
 
             return RedirectToAction("CategoriesTable");
         }
@@ -61,7 +61,7 @@ namespace Ecommerce.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int id) // this 'id' name is same as the id name in the routes table
         {
-            var category = CategoriesService.ClassObject.GetCategory(id); // call the method 'GetCategory' from categories service and set it to the variable 'categories'
+            var category = CategoriesService.Instance.GetCategory(id); // call the method 'GetCategory' from categories service and set it to the variable 'categories'
 
 
             return PartialView(category);
@@ -71,7 +71,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Edit(Category category)
         {
 
-            CategoriesService.ClassObject.UpdateCategory(category); // pass the 'category' argument values to the method 'UpdateCategory'
+            CategoriesService.Instance.UpdateCategory(category); // pass the 'category' argument values to the method 'UpdateCategory'
 
             return RedirectToAction("CategoriesTable"); // redirect to Index View
         }
@@ -80,7 +80,7 @@ namespace Ecommerce.Web.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            CategoriesService.ClassObject.DeleteCategory(id); // pass the  id value to the method 'DeleteCategory'
+            CategoriesService.Instance.DeleteCategory(id); // pass the  id value to the method 'DeleteCategory'
 
             return RedirectToAction("CategoriesTable");
         }

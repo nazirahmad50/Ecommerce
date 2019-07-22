@@ -1,0 +1,57 @@
+﻿@model Ecommerce.Entities.Config
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form id="editProduct">
+    <input type="hidden" name="Key" value="@Model.Key" />
+
+    <div class="row">
+
+
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Type</label>
+                <input class="form-control" name="Key" value="@Model.Key" />
+
+            </div>
+
+            <div class="form-group">
+                <label>Value</label>
+                <input class="form-control" name="Value" value="@Model.Value" />
+
+            </div>
+            </div>
+    </div>
+
+    <button id="updateBtn" type="button">Update</button>
+
+</form>
+
+<script>
+
+     
+
+    $("#updateBtn").click(function () {
+
+
+        $.ajax({
+
+            method: "POST",
+            url: '@Url.Action("Edit", "Configuration")',
+            data: $("#editProduct").serialize()
+
+        })
+            .done(function (response) {
+
+                $("#tableDiv").html(response);
+                $("#Form").html("");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+        });
+
+
+</script>

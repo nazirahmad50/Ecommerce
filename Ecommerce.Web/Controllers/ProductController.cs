@@ -19,7 +19,7 @@ namespace Ecommerce.Web.Controllers
 
         public ActionResult ProductsTable(string search) // the value for the 'search' parameter will be recieved through ajax
        {
-            var products = ProductsService.ClassObject.GetProducts();
+            var products = ProductsService.Instance.GetProducts();
 
             if (!string.IsNullOrEmpty(search)) // if 'search' parameter is not null or empty
             {
@@ -36,7 +36,7 @@ namespace Ecommerce.Web.Controllers
         {
 
 
-            var categories = CategoriesService.ClassObject.GetCategories(); // get a list of all categories
+            var categories = CategoriesService.Instance.GetCategories(); // get a list of all categories
 
             return PartialView(categories);
         }
@@ -53,10 +53,10 @@ namespace Ecommerce.Web.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 Price = model.Price,
-                Category = CategoriesService.ClassObject.GetCategory(model.CategoryId)
+                Category = CategoriesService.Instance.GetCategory(model.CategoryId)
             }; 
 
-            ProductsService.ClassObject.SaveProduct(newProduct); 
+            ProductsService.Instance.SaveProduct(newProduct); 
 
             return RedirectToAction("ProductsTable");
         }
@@ -66,7 +66,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Edit(int id)
         {
 
-            var product = ProductsService.ClassObject.GetProduct(id);
+            var product = ProductsService.Instance.GetProduct(id);
 
             return PartialView(product);
         }
@@ -75,7 +75,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Edit(Product product)
         {
 
-            ProductsService.ClassObject.UpdatepProduct(product); 
+            ProductsService.Instance.UpdatepProduct(product); 
 
             return RedirectToAction("ProductsTable");
         }
@@ -84,7 +84,7 @@ namespace Ecommerce.Web.Controllers
         public ActionResult Delete(int id)
         {
 
-            ProductsService.ClassObject.DeleteProduct(id); 
+            ProductsService.Instance.DeleteProduct(id); 
 
             return RedirectToAction("ProductsTable");
         }

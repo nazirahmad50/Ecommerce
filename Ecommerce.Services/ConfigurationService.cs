@@ -10,26 +10,26 @@ namespace Ecommerce.Services
 {
     public class ConfigurationService
     {
-        // create a signleton pattern
-        public static ConfigurationService ClassObject
+        #region Singleton
+        public static ConfigurationService Instance
         {
             get
             {
                 // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
-                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new ConfigurationService();
+                if (instance == null) instance = new ConfigurationService();
 
                 // if its not null just return 'PrivateInMemoryObject'
-                return PrivateInMemoryObject;
+                return instance;
             }
         }
 
-        private static ConfigurationService PrivateInMemoryObject { get; set; }
+        private static ConfigurationService instance { get; set; }
 
         private ConfigurationService()
         {
 
         }
-
+        #endregion
 
         public Config GetConfig(string key)
         {
@@ -38,6 +38,26 @@ namespace Ecommerce.Services
                 return context.Configurations.Find(key);
 
             }
-        } 
+        }
+
+
+        public List<Config> GetConfigs()
+        {
+            using (var context = new CBContext())
+            {
+                return context.Configurations.ToList();
+
+            }
+        }
+
+        public void UpdateConfigs(Config config)
+        {
+            using (var context = new CBContext())
+            {
+                context.Entry(config).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
+
+            }
+        }
     }
 }

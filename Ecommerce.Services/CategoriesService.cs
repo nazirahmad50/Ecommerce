@@ -1,11 +1,8 @@
 ﻿using Ecommerce.Database;
 using Ecommerce.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq;
 
 
 namespace Ecommerce.Services // services are used to communicate between the Web and the Database
@@ -13,27 +10,28 @@ namespace Ecommerce.Services // services are used to communicate between the Web
     public class CategoriesService
     {
 
-        // create a signleton pattern
-        public static CategoriesService ClassObject {
+        #region Singleton
+        public static CategoriesService Instance
+        {
             get {
                 // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
-                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new CategoriesService();
+                if (instance == null) instance = new CategoriesService();
 
                 // if its not null just return 'PrivateInMemoryObject'
-                return PrivateInMemoryObject;
+                return instance;
             }
         }
 
-        private static CategoriesService PrivateInMemoryObject { get; set; }
+        private static CategoriesService instance { get; set; }
 
         private CategoriesService()
         {
 
         }
 
+        #endregion
 
-
-        public  void SaveCategory(Category category)
+        public void SaveCategory(Category category)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
             {

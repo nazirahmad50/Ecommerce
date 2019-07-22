@@ -186,11 +186,11 @@
 
                        
 
-                                <li><a href="@ConfigurationService.ClassObject.GetConfig("FacebookURL").Value"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="@ConfigurationService.Instance.GetConfig("FacebookURL").Value"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#">@ConfigurationService.Instance.GetConfig("TwitterURL").Value<i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#">@ConfigurationService.Instance.GetConfig("GoogleURL").Value<i class="fa fa-google"></i></a></li>
+                                <li><a href="#">@ConfigurationService.Instance.GetConfig("BehanceURL").Value<i class="fa fa-behance"></i></a></li>
+                                <li><a href="#">@ConfigurationService.Instance.GetConfig("LinkedinURL").Value<i class="fa fa-linkedin"></i></a></li>
                             </ul><!-- /.flat-social -->
                         </div><!-- /.subscribe -->
                     </div>
@@ -237,8 +237,8 @@
                                 <a href="index.html"><img src="~/Content/images/logo@2x.png" alt="image" width="107" height="24"></a>
                             </div>
                             <ul class="flat-contact">
-                                <li class="address">112 Kingdom, NA 12, New York</li>
-                                <li class="phone">+12 345 678 910</li>
+                                <li class="address">@ConfigurationService.Instance.GetConfig("CompanyAddress").Value</li>
+                                <li class="phone">@ConfigurationService.Instance.GetConfig("CompanyPhone").Value</li>
                                 <li class="email">infor.deercreative@gmail.com</li>
                             </ul><!-- /.flat-contact -->
                         </div><!-- /.widget -->

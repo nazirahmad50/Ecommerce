@@ -13,26 +13,26 @@ namespace Ecommerce.Services // services are used to communicate between the Web
     public class ProductsService
     {
 
-        // create a signleton pattern
-        public static ProductsService ClassObject
+        #region Singleton
+        public static ProductsService Instance
         {
             get
             {
                 // 'PrivateInMemoryObject' doesnt exist in memory then create 'PrivateInMemoryObject' obejct
-                if (PrivateInMemoryObject == null) PrivateInMemoryObject = new ProductsService();
+                if (instance == null) instance = new ProductsService();
 
                 // if its not null just return 'PrivateInMemoryObject'
-                return PrivateInMemoryObject;
+                return instance;
             }
         }
 
-        private static ProductsService PrivateInMemoryObject { get; set; }
+        private static ProductsService instance { get; set; }
 
         private ProductsService()
         {
 
         }
-
+        #endregion
 
         public void SaveProduct(Product product)
         {
