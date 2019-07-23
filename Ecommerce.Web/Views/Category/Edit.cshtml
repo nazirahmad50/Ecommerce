@@ -64,14 +64,16 @@
         </div>
     </div>
 
-    <button id="updateBtn" type="button">Update</button>
+    <button id="updateBtn" class="btn-primary" type="button">Update</button>
+    <button id="cancelBtn" type="button">Cancel</button>
+
 
 </form>
 
 <script>
 
         $("#imgUpload").change(function () {
-        
+
         var formData = new FormData(); // create FormData object to add a file into
 
         var totalFiles = this.files.length; // 'this' means get which ever element that has the 'change' function applied on and get the total files of that element
@@ -87,7 +89,7 @@
 
             // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
             method: "POST",
-            url: '@Url.Action("UploadImage", "Shared")', 
+            url: '@Url.Action("UploadImage", "Shared")',
             dataType: "json",
             data: formData,
             contentType: false,
@@ -100,7 +102,7 @@
 
                     $("#categoryImg").attr("src", response.ImageUrl); // pass the image url from teh response json to the 'src' attribute of the image tag
 
-                    $("#ImageURL").val(response.ImageUrl); 
+                    $("#ImageURL").val(response.ImageUrl);
 
                 }
             })
@@ -116,7 +118,7 @@
         $.ajax({
 
             method: "POST",
-            url: '@Url.Action("Edit", "Category")', 
+            url: '@Url.Action("Edit", "Category")',
             data: $("#editProduct").serialize()
 
         })
@@ -124,12 +126,23 @@
 
                 $("#tableDiv").html(response);
                 $("#createForm").html("");
+
+                focusAction("tableDiv");
+
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
             });
 
-        });
+    });
 
+      $("#cancelBtn").click(function () {
+
+
+           $("#createForm").html("");
+
+           focusAction("tableDiv");
+
+           });
 
 </script>

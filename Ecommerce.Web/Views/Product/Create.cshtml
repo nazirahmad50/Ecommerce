@@ -32,7 +32,9 @@
         <label>Price</label>
         <input class="form-control" name="Price" />
     </div>
-    <button id="saveBtn" class="btn btn-primary" type="button">Save</button>
+    <button id="createBtn" class="btn-primary" type="button">Add</button>
+    <button id="cancelBtn" type="button">Cancel</button>
+
 </form>
 
 
@@ -40,7 +42,7 @@
 <script>
 
 
-    $("#saveBtn").click(function () {
+    $("#createBtn").click(function () {
 
 
         $.ajax({
@@ -64,6 +66,15 @@
     });
 
  
+    
+      $("#cancelBtn").click(function () {
+
+
+           $("#actionContainer").html("");
+
+           focusAction("tableDiv");
+
+           });
 
 
 

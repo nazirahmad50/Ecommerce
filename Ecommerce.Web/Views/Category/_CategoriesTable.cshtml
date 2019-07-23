@@ -165,7 +165,7 @@
 
                 $("#createForm").html(response);
 
-                focusAction();
+                focusAction("createForm");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
@@ -188,6 +188,9 @@
             .done(function (response) {
 
                 $("#createForm").html(response);
+
+                focusAction("createForm");
+
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
@@ -231,16 +234,7 @@
             }
         })
 
-
-
-
     })
-
-    function focusAction() {
-        $("html, body").animate({
-            scrollTop: $("#createForm").offset().top - 100
-        }, 1000);
-    }
 
 
 </script>

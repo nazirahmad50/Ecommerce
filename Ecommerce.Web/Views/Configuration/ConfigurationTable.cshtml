@@ -157,6 +157,8 @@
             .done(function (response) {
 
                 $("#Form").html(response);
+
+                focusAction("Form");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");

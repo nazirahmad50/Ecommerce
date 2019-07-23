@@ -224,7 +224,7 @@
                 // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
                 $("#actionContainer").html(response);
 
-                focusAction();
+                focusAction("actionContainer");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
@@ -245,6 +245,9 @@
 
                 // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
                 $("#actionContainer").html(response);
+
+                focusAction("actionContainer");
+
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
@@ -299,13 +302,6 @@
          // third param we assign a path
          $.cookie("cartProducts", products.join("-"), { path: "/" }); // 'join' will join the values in the array as string, e.g. without join [1,2,3] - with join ["1-2-3"]
      });
-
-
-    function focusAction() {
-        $("html, body").animate({
-            scrollTop: $("#actionContainer").offset().top - 100
-        }, 1000);
-    }
 
 
 

@@ -3,30 +3,32 @@
     ViewBag.Title = "Edit";
 }
 
-<form id="editProduct">
-    <input type="hidden" name="Key" value="@Model.Key" />
+    <form id="editProduct">
+        <input type="hidden" name="Key" value="@Model.Key" />
 
-    <div class="row">
+        <div class="row">
 
 
-        <div class="col-md-8">
-            <div class="form-group">
-                <label>Type</label>
-                <input class="form-control" name="Key" value="@Model.Key" />
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Type</label>
+                    <input class="form-control" name="Key" value="@Model.Key" />
 
+                </div>
+
+                <div class="form-group">
+                    <label>Value</label>
+                    <input class="form-control" name="Value" value="@Model.Value" />
+
+                </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Value</label>
-                <input class="form-control" name="Value" value="@Model.Value" />
+        <button id="updateBtn" class="btn-primary" type="button">Update</button>
+        <button id="cancelBtn" type="button">Cancel</button>
 
-            </div>
-            </div>
-    </div>
 
-    <button id="updateBtn" type="button">Update</button>
-
-</form>
+    </form>
 
 <script>
 
@@ -46,12 +48,24 @@
 
                 $("#tableDiv").html(response);
                 $("#Form").html("");
+
+                focusAction("tableDiv");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
             });
 
-        });
+    });
+
+    
+      $("#cancelBtn").click(function () {
+
+
+           $("#Form").html("");
+
+           focusAction("tableDiv");
+
+           });
 
 
 </script>

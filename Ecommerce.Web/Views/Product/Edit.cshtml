@@ -38,7 +38,9 @@
 
     </div>
 
-    <button id="updateBtn" type="button">Update</button>
+    <button id="updateBtn" class="btn-primary" type="button">Update</button>
+    <button id="cancelBtn" type="button">Cancel</button>
+
 
 </form>
 
@@ -64,12 +66,24 @@
                 $("#tableDiv").html(response);
                 $("#actionContainer").html(""); // empty the form so it ill disapear from the view
 
+                focusAction("tableDiv");
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
             });
     });
+
+    
+      $("#cancelBtn").click(function () {
+
+
+           $("#actionContainer").html("");
+
+           focusAction("tableDiv");
+
+           });
+
 
 
 
