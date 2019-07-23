@@ -1,6 +1,13 @@
-﻿@model Ecommerce.Entities.Product
+﻿@model Ecommerce.Web.ViewModels.ProductViewModels
 @{
     ViewBag.Title = "Edit";
+
+    
+    var trueChecked = Model.isFeatured ? "checked" : string.Empty;
+    var falseChecked = !Model.isFeatured ? "checked" : string.Empty;
+
+      var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/system/placeholder.jpg";
+
 }
 
 <h2>Edit Product</h2>
@@ -12,6 +19,17 @@
 
 
         <div class="col-md-8">
+
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" name="CategoryId">
+                    @foreach (var category in Model.AvailableCategories)
+                    {
+                        var selected = category.ID == Model.CategoryId ? "selected" : string.Empty;
+                        <option value="@category.ID" @selected>@category.Name</option>
+                    }
+                </select>
+            </div>
 
             <div class="form-group">
                 <label>Name</label>
@@ -31,10 +49,37 @@
                 <input class="form-control" name="Price" value="@Model.Price" />
 
             </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input class="form-control" id="ImageURL" name="ImageURL" type="hidden" />
+                <input class="form-control" id="imgUpload" name="Image" type="file" accept=".png, .jpg" />
+
+            </div>
+            <div class="form-group">
+                <label>Is Featured?</label>
+
+                <div class="input-group">
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="True" @trueChecked /> True
+
+                    </div>
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="False" @falseChecked /> False
+
+                    </div>
+                </div>
+
+            </div>
 
 
         </div>
+        <div class="col-md-4">
+            <div class="thumb">
+                <img src="@imageURL" id="productImg" class="img-thumbnail img-fluid" />
 
+            </div>
+
+        </div>
 
     </div>
 
@@ -47,6 +92,46 @@
 
 
 <script>
+
+     $("#imgUpload").change(function () {
+
+        var formData = new FormData(); // create FormData object to add a file into
+
+        var totalFiles = this.files.length; // 'this' means get which ever element that has the 'change' function applied on and get the total files of that element
+
+        for (var i = 0; i < totalFiles; i++) { // loop through all the files and add them to form data
+
+            var file = this.files[i];
+            formData.append("Photo", file); // append each of the file as 'Photo' to from data
+        }
+
+
+        $.ajax({
+
+            // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
+            method: "POST",
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: "json",
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) { // for this will recieve a Json response because the 'UploadImage' returns a Json Result
+                console.log(response);
+
+                if (response.Success) { // if success if equal to true
+
+                    $("#productImg").attr("src", response.ImageUrl); // pass the image url from teh response json to the 'src' attribute of the image tag
+
+                    $("#ImageURL").val(response.ImageUrl);
+
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+    })
 
 
     $("#updateBtn").click(function () {

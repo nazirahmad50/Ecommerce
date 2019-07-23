@@ -13,6 +13,8 @@ namespace Ecommerce.Services // services are used to communicate between the Web
     public class ProductsService
     {
 
+        
+
         #region Singleton
         public static ProductsService Instance
         {
@@ -57,9 +59,9 @@ namespace Ecommerce.Services // services are used to communicate between the Web
             using (var context = new CBContext())
             {
                 //return context.Products.OrderBy(x =>x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList(); 
-
+                
                 return context.Products.Include(x=>x.Category).ToList(); // 'Include' method will include the 'Category' for every product              
-
+                
 
 
             }
@@ -85,7 +87,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         {
             using (var context = new CBContext())
             {
-                return context.Products.Find(ID); // return the category from the categories database based on the ID
+                return context.Products.Where(x => x.ID == ID).Include(x => x.Category).FirstOrDefault(); 
 
             }
 

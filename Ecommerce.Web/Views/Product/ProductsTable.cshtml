@@ -3,8 +3,9 @@
     ViewBag.Title = "ProductsTable";
 }
 
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<!--for datatables pagination-->
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 <div>
 
@@ -211,8 +212,7 @@
     })
 
     $("#newBtn").click(function () {
-
-
+        
         $.ajax({
 
             method: "GET", // By default the method is always 'GET'
@@ -225,6 +225,7 @@
                 $("#actionContainer").html(response);
 
                 focusAction("actionContainer");
+
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
@@ -232,7 +233,7 @@
     });
 
     $(".edtBtn").click(function () {
-
+        
 
         $.ajax({
 

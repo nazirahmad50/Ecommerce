@@ -1,37 +1,79 @@
 ﻿@model List<Ecommerce.Entities.Category>
 @{
     ViewBag.Title = "Create";
+
+        var imageURL = "/Content/images/system/placeholder.jpg";
+
 }
 
 <h2>Create Product</h2>
 
 <form id="createProduct">
-    <div class="form-group">
-        <label>Category</label>
+    <div class="row">
 
-        <!--drop down list for category-->
-        <select class="form-control" name="CategoryId">
 
-            @foreach (var item in Model)
-            {
-                <option value="@item.ID">@item.Name</option>// categories will be saved to database based on their id
-            }
+        <div class="col-md-8">
 
-        </select>
-    </div>
-    <div class="form-group">
+            <div class="form-group">
+                <label>Category</label>
 
-        <label>Name</label>
-        <input class="form-control" name="Name" />
+                <!--drop down list for category-->
+                <select class="form-control" name="CategoryId">
+
+                    @foreach (var item in Model)
+                    {
+                        <option value="@item.ID">@item.Name</option>// categories will be saved to database based on their id
+                    }
+
+                </select>
+            </div>
+            <div class="form-group">
+
+                <label>Name</label>
+                <input class="form-control" name="Name" />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" name="Description" />
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input class="form-control" name="Price" />
+            </div>
+
+            <div class="form-group">
+                <label>Image</label>
+                <input class="form-control" id="ImageURL" name="ImageURL" type="hidden" />
+                <input class="form-control" id="imgUpload" name="Image" type="file" accept=".png, .jpg" />
+
+            </div>
+            <div class="form-group">
+                <label>Is Featured?</label>
+
+                <div class="input-group">
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="True" /> True
+
+                    </div>
+                    <div class="radio form-control">
+                        <input name="isFeatured" type="radio" value="False" /> False
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="thumb">
+                <img src="@imageURL" id="productImg" class="img-thumbnail img-fluid" />
+
+            </div>
+
+        </div>
     </div>
-    <div class="form-group">
-        <label>Description</label>
-        <input class="form-control" name="Description" />
-    </div>
-    <div class="form-group">
-        <label>Price</label>
-        <input class="form-control" name="Price" />
-    </div>
+
     <button id="createBtn" class="btn-primary" type="button">Add</button>
     <button id="cancelBtn" type="button">Cancel</button>
 
@@ -41,23 +83,63 @@
 
 <script>
 
+    $("#imgUpload").change(function () {
+
+        var formData = new FormData(); // create FormData object to add a file into
+
+        var totalFiles = this.files.length; // 'this' means get which ever element that has the 'change' function applied on and get the total files of that element
+
+        for (var i = 0; i < totalFiles; i++) { // loop through all the files and add them to form data
+
+            var file = this.files[i];
+            formData.append("Photo", file); // append each of the file as 'Photo' to from data
+        }
+
+
+        $.ajax({
+
+            // for this we are posting the file which is in the 'formData' to the JsonResult method called 'UploadImage' in the 'Shared' controller
+            method: "POST",
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: "json",
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) { // for this will recieve a Json response because the 'UploadImage' returns a Json Result
+                console.log(response);
+
+                if (response.Success) { // if success if equal to true
+
+                    $("#productImg").attr("src", response.ImageUrl); // pass the image url from teh response json to the 'src' attribute of the image tag
+
+                    $("#ImageURL").val(response.ImageUrl);
+
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+                    });
+
+
 
     $("#createBtn").click(function () {
 
 
         $.ajax({
 
-            method: "POST", 
-            url: '@Url.Action("Create", "Product")', 
-            // 'serialize' will get the values for every input field 
+            method: "POST",
+            url: '@Url.Action("Create", "Product")',
+            // 'serialize' will get the values for every input field
             // it will look like this e.g. - Name=p1&Description=None&Price=10.00
-            data: $("#createProduct").serialize() 
+            data: $("#createProduct").serialize()
 
         })
             .done(function (response) { // the response returns an html with values
 
                 $("#tableDiv").html(response);
-                $("#actionContainer").html(""); // empty the form so it ill disapear from the view
+                $("#actionContainer").html(""); // empty the form so it will disapear from the view
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -65,8 +147,8 @@
             });
     });
 
- 
-    
+
+
       $("#cancelBtn").click(function () {
 
 
@@ -74,7 +156,8 @@
 
            focusAction("tableDiv");
 
-           });
+      });
+
 
 
 

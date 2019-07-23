@@ -64,6 +64,8 @@ namespace Ecommerce.Web.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 Price = model.Price,
+                ImageURL = model.ImageURL,
+                isFeatured = model.isFeatured,
                 Category = CategoriesService.Instance.GetCategory(model.CategoryId)
             }; 
 
@@ -79,14 +81,43 @@ namespace Ecommerce.Web.Controllers
 
             var product = ProductsService.Instance.GetProduct(id);
 
-            return PartialView(product);
+
+
+            ProductViewModels model = new ProductViewModels
+            {
+                ID = product.ID,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ImageURL = product.ImageURL,
+                isFeatured = product.isFeatured,
+                CategoryId = product.Category != null ? product.Category.ID : 0
+
+            };
+
+            model.AvailableCategories = CategoriesService.Instance.GetCategories();
+
+
+            return PartialView(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(ProductViewModels model)
         {
 
-            ProductsService.Instance.UpdatepProduct(product); 
+            var existingProduct = ProductsService.Instance.GetProduct(model.ID);
+
+            existingProduct.Name = model.Name;
+            existingProduct.Description = model.Description;
+            existingProduct.Price = model.Price;
+            existingProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryId);
+            existingProduct.ImageURL = model.ImageURL;
+            existingProduct.isFeatured = model.isFeatured;
+
+
+
+
+            ProductsService.Instance.UpdatepProduct(existingProduct); 
 
             return RedirectToAction("ProductsTable");
         }

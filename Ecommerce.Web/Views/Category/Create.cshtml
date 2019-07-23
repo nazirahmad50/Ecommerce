@@ -1,6 +1,9 @@
 ﻿
 @{
     ViewBag.Title = "Create";
+
+    var imageURL = "/Content/images/system/placeholder.jpg";
+
 }
 
 <h2>Create Category</h2>
@@ -45,7 +48,7 @@
 
         <div class="col-md-4">
             <div class="thumb">
-                <img id="categoryImg" class="img-thumbnail img-fluid" />
+                <img src="@imageURL" id="categoryImg" class="img-thumbnail img-fluid" />
 
             </div>
 
@@ -54,7 +57,7 @@
 
 
     <button id="addBtn" class="btn-primary" type="button">Add</button>
-    <button id="cancelBtn" type="button">Cnacel</button>
+    <button id="cancelBtn" type="button">Cancel</button>
 
 </form>
 

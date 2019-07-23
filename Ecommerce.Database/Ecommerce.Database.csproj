@@ -65,6 +65,14 @@
     <Compile Include="Migrations\201907211548228_configurationTableCreated.Designer.cs">
       <DependentUpon>201907211548228_configurationTableCreated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907231612416_imageURLPropAddedToProducts.cs" />
+    <Compile Include="Migrations\201907231612416_imageURLPropAddedToProducts.Designer.cs">
+      <DependentUpon>201907231612416_imageURLPropAddedToProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907231831028_isFeaturedPropAddedToProducts.cs" />
+    <Compile Include="Migrations\201907231831028_isFeaturedPropAddedToProducts.Designer.cs">
+      <DependentUpon>201907231831028_isFeaturedPropAddedToProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -90,6 +98,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907211548228_configurationTableCreated.resx">
       <DependentUpon>201907211548228_configurationTableCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907231612416_imageURLPropAddedToProducts.resx">
+      <DependentUpon>201907231612416_imageURLPropAddedToProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907231831028_isFeaturedPropAddedToProducts.resx">
+      <DependentUpon>201907231831028_isFeaturedPropAddedToProducts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
