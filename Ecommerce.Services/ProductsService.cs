@@ -36,6 +36,20 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         }
         #endregion
 
+
+        public List<Product> GetFeaturedProducts()
+        {
+           
+            using (var context = new CBContext())
+            {
+
+                return context.Products.Where(x => x.isFeatured && x.ImageURL != null).ToList();           
+
+            }
+
+
+        }
+
         public void SaveProduct(Product product)
         {
             using (var context = new CBContext()) // create an object of 'CBContext' 
