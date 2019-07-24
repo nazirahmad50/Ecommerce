@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Ecommerce.Web.ViewModels;
+using System.Data.Entity;
 
 namespace Ecommerce.Web.Controllers
 {
@@ -20,24 +21,37 @@ namespace Ecommerce.Web.Controllers
             return View(); 
         }
 
-        public ActionResult CategoriesTable(string search)
+        public ActionResult CategoriesTable(string search, int? pageNo)
         {
+            // if pageNo has a value and its value is greater than 0 then set pageNo to that pageNo value
+            // else if pageNo doesnt have value then set 'model.pageNo'  to 1
+            // else if pageNo value is not greater than 0 then set 'model.pageNo' to 1
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
 
+            var totalRecords = CategoriesService.Instance.GetCategoriesCount(search); // get total categories
+
+            // get categories and set it in model
             CategorySearchViewModels model = new CategorySearchViewModels
             {
-                Categories = CategoriesService.Instance.GetCategories()
+                Categories = CategoriesService.Instance.GetCategories(search, pageNo.Value)
             };
 
+            model.SearchTerm = search;
 
-
-            if (!string.IsNullOrEmpty(search))
+            if (model.Categories != null)
             {
-                model.SearchTerm = search;
-                model.Categories = model.Categories.Where(x => x.Name != null && x.Name.ToLower().Contains(model.SearchTerm.ToLower())).ToList();
+                int pageSize = int.Parse(ConfigurationService.Instance.GetConfig("PageSize").Value); // get the page size value from config key called PageSize
+
+                // pass the total items, pageNo and page size to calculate pagination values
+                model.Pager = new Pager(totalRecords, pageNo,pageSize); 
+
+
+                return PartialView("_CategoriesTable", model);
             }
-
-
-            return PartialView("_CategoriesTable", model);
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
         [HttpGet]

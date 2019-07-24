@@ -3,9 +3,6 @@
     ViewBag.Title = "ProductsTable";
 }
 
-<!--for datatables pagination-->
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-<script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 <div>
 
@@ -80,40 +77,40 @@
             @if (Model.Products != null && Model.Products.Count > 0)
             {
 
-            foreach (var item in Model.Products)
-            {
-                <tr>
+                foreach (var item in Model.Products)
+                {
+                    <tr>
 
-                    <td>@item.Name</td>
-                    <td>
-                        @if (item.Category != null)
-                        {
-                            <text>@item.Category.Name</text> // show the category name as text, if we dont use text will get an error
-                        }
-                        else
-                        {
-                            <text>-</text>
+                        <td>@item.Name</td>
+                        <td>
+                            @if (item.Category != null)
+                            {
+                                <text>@item.Category.Name</text> // show the category name as text, if we dont use text will get an error
+                            }
+                            else
+                            {
+                                <text>-</text>
 
-                        }
-                    </td>
-                    <td>@item.Price</td>
-                    <td>
-                        <!--'id' attribute should not hold data, so we created our own elemtent attribute called 'data-id' and passed data of the items id-->
-                        <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
-                        <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
-                        <button class="addCart" data-id="@item.ID" type="button">Add Cart</button>
+                            }
+                        </td>
+                        <td>@item.Price</td>
+                        <td>
+                            <!--'id' attribute should not hold data, so we created our own elemtent attribute called 'data-id' and passed data of the items id-->
+                            <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
+                            <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
+                            <button class="addCart" data-id="@item.ID" type="button">Add Cart</button>
 
 
 
-                    </td>
+                        </td>
 
-                </tr>
+                    </tr>
                 }
             }
             else
             {
                 <tr>
-                     <td class="text-danger" colspan="4">No Products Found</td>
+                    <td class="text-danger" colspan="4">No Products Found</td>
                 </tr>
             }
 
@@ -121,15 +118,44 @@
 
     </table>
 
+    <!--Pagination-->
     <div>
 
-        @*@if (Model.pageNo != 1)
+        @if (Model.Pager != null) // if pages is not null
         {
-            <button class="pageBtns" data-pageNo="@(Model.pageNo - 1)">Previous</button>
+            // if current page is more than 1
+            if (Model.Pager.CurrentPage > 1) // start pages
+            {
+                // show both first and previous page buttons
+                <button class="pageBtns" data-pageNo="1">First</button>
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage - 1)">Previous</button>
+
+            }
+
+            // loop through as long as the start page is less than or equal to the end page
+            for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++) // the middle pages
+            {
+                string activeClass = Model.Pager.CurrentPage == page ? " active bg-info" : string.Empty;
+
+                <button class=" @activeClass pageBtns" data-pageNo="@page">@page</button>
+
+            }
+
+            // if the current page is less than the total pages, means if current page is not on the last page
+            if (Model.Pager.CurrentPage < Model.Pager.TotalPages) // the last pages
+            {
+                // show next and last page buttons
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage + 1)">Next</button>
+                <button class="pageBtns" data-pageNo="@Model.Pager.EndPage">Last</button>
+
+
+
+            }
+
 
         }
 
-        <button class="pageBtns" data-pageNo="@(Model.pageNo + 1)">Next</button>*@
+
 
     </div>
 
@@ -138,16 +164,16 @@
 
 <script>
 
-    $('#productsTable').DataTable();
-
-    @*$(".pageBtns").click(function () {
-
+     $(".pageBtns").click(function () {
 
         $.ajax({
 
             method: "GET", // By default the method is always 'GET'
             url: '@Url.Action("ProductsTable", "Product")',
-            data: {pageNo: $(this).attr("data-pageNo") }
+            data: {
+                pageNo: $(this).attr("data-pageNo"),
+                search: '@Model.SearchTerm' 
+            }
 
         })
             .done(function (response) { // the response returns an html with values
@@ -160,9 +186,8 @@
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Fail");
             });
-    });*@
+    });
 
-  
 
     // '$' Jquery reference
     // '#' is used for ids and '.' is used for classes

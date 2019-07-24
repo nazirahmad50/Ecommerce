@@ -21,33 +21,49 @@ namespace Ecommerce.Web.Controllers
         public ActionResult ProductsTable(string search, int? pageNo) // '?' means that the var pageNo can be nullable
        {
 
-            ProductTablesViewModels model = new ProductTablesViewModels();
-
 
             // if pageNo has a value and its value is greater than 0 then set mode.pageNo to that pageNo value
             // else if pageNo doesnt have value then set 'model.pageNo'  to 1
             // else if pageNo value is not greater than 0 then set 'model.pageNo' to 1
-            model.pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1; 
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
 
-            model.Products = ProductsService.Instance.GetProducts(model.pageNo);
+            var totalRecords = ProductsService.Instance.GetProductsCount(); // get total Products
 
 
-            if (!string.IsNullOrEmpty(search)) // if 'search' parameter is not null or empty
+            ProductTablesViewModels model = new ProductTablesViewModels
             {
-                model.Products = model.Products.Where(x => x.Name.ToLower().Contains(search.ToLower())).ToList(); // get the product from database where its name is equal to the 'search' parameter
 
+                Products = ProductsService.Instance.GetProducts(search, pageNo.Value)
+
+            };
+
+            model.SearchTerm = search;
+
+            if (model.Products != null)
+            {
+                int pageSize = int.Parse(ConfigurationService.Instance.GetConfig("PageSize").Value); // get the page size value from config key called PageSize
+
+                // pass the total items, pageNo and page size to calculate pagination values
+                model.Pager = new Pager(totalRecords, pageNo, pageSize);
+
+
+                // used 'PartialView' becuase we are trying to render this actions View in the Index View, so when we use 'PartialView' it will only render the elements in the Index View from this actions View
+                return PartialView(model);
             }
-
-            // used 'PartialView' becuase we are trying to render this actions View in the Index View, so when we use 'PartialView' it will only render the elements in the Index View from this actions View
-            return PartialView(model); 
+            else
+            {
+                return HttpNotFound();
+            }
         }
+
+
 
         [HttpGet]
         public ActionResult Create()
         {
 
 
-            var categories = CategoriesService.Instance.GetCategories(); // get a list of all categories
+            var categories = CategoriesService.Instance.GetAllCategories(); // get a list of all categories
 
             return PartialView(categories);
         }
@@ -95,7 +111,7 @@ namespace Ecommerce.Web.Controllers
 
             };
 
-            model.AvailableCategories = CategoriesService.Instance.GetCategories();
+            model.AvailableCategories = CategoriesService.Instance.GetAllCategories();
 
 
             return PartialView(model);

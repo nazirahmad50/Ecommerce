@@ -54,54 +54,126 @@
 
 </div>
 
-<table class="table table-striped">
+<div>
+    <table class="table table-striped">
 
-    <thead>
+        <thead>
 
-        <tr>
-            <th class="font-weight-bold">Category</th>
-            <th class="font-weight-bold">Products</th>
-            <th class="font-weight-bold">Action</th>
-
-
-
-        </tr>
-
-    </thead>
-
-    <tbody>
-        @if (Model.Categories != null && Model.Categories.Count > 0)
-        {
+            <tr>
+                <th class="font-weight-bold">Category</th>
+                <th class="font-weight-bold">Products</th>
+                <th class="font-weight-bold">Action</th>
 
 
 
-            foreach (var item in Model.Categories)
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @if (Model.Categories != null && Model.Categories.Count > 0)
             {
 
 
-                <tr>
 
-                    <td>@item.Name</td>
-                    <td>
-                        @item.Products.Count
-                    </td>
-                    <td>
-
-                        <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
-                        <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
-
-                    </td>
+                foreach (var item in Model.Categories)
+                {
 
 
-                </tr>
+                    <tr>
+
+                        <td>@item.Name</td>
+                        <td>
+                            @item.Products.Count
+                        </td>
+                        <td>
+
+                            <button class="edtBtn" data-id="@item.ID" type="button">Edit</button>
+                            <button class="deleteBtn" data-id="@item.ID" type="button">Delete</button>
+
+                        </td>
+
+
+                    </tr>
+                }
             }
+
+        </tbody>
+
+    </table>
+
+
+
+    <!--Pagination-->
+    <div>
+
+        @if (Model.Pager != null) // if pages is not null
+        {
+            // if current page is more than 1
+            if (Model.Pager.CurrentPage > 1) // start pages
+            {
+                // show both first and previous page buttons
+                <button class="pageBtns" data-pageNo="1">First</button>
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage - 1)">Previous</button>
+
+            }
+
+            // loop through as long as the start page is less than or equal to the end page
+            for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++) // the middle pages
+            {
+                string activeClass = Model.Pager.CurrentPage == page ? " active bg-info" : string.Empty;
+
+                <button class=" @activeClass pageBtns" data-pageNo="@page">@page</button>
+
+            }
+
+            // if the current page is less than the total pages, means if current page is not on the last page
+            if (Model.Pager.CurrentPage < Model.Pager.TotalPages) // the last pages
+            {
+                // show next and last page buttons
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage + 1)">Next</button>
+                <button class="pageBtns" data-pageNo="@Model.Pager.EndPage">Last</button>
+
+
+
+            }
+
+
         }
 
-    </tbody>
 
-</table>
+
+    </div>
+
+
+
+</div>
 
 <script>
+
+      $(".pageBtns").click(function () {
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: '@Url.Action("CategoriesTable", "Category")',
+            data: {
+                pageNo: $(this).attr("data-pageNo"),
+                search: '@Model.SearchTerm' 
+            }
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#tableDiv").html(response);
+
+                focusAction();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
 
     $("#searchBtn").click(function () {
 
@@ -112,7 +184,7 @@
             method: "GET",
             // use UrlHelper method called 'Action' which takes the action first and then the controller
             // purpose of this is that we can customize this url like change it to '/Categories/All' which is done in 'RouteConfig'
-            url: '@Url.Action("CategoriesTable", "Category")', 
+            url: '@Url.Action("CategoriesTable", "Category")',
             data: { search: searchTxt }
 
         })
@@ -127,7 +199,7 @@
 
     })
 
-    
+
     $("#resetBtn").click(function () {
 
         var searchTxt = "";
@@ -137,7 +209,7 @@
             method: "GET",
             // use UrlHelper method called 'Action' which takes the action first and then the controller
             // purpose of this is that we can customize this url like change it to '/Categories/All' which is done in 'RouteConfig'
-            url: '@Url.Action("CategoriesTable", "Category")', 
+            url: '@Url.Action("CategoriesTable", "Category")',
             data: { search: searchTxt }
 
         })
@@ -158,7 +230,7 @@
         $.ajax({
 
             method: "GET",
-            url: '@Url.Action("Create", "Category")', 
+            url: '@Url.Action("Create", "Category")',
 
         })
             .done(function (response) {
@@ -181,7 +253,7 @@
         $.ajax({
 
             method: "GET",
-            url: '@Url.Action("Edit", "Category")', 
+            url: '@Url.Action("Edit", "Category")',
             data: { id: $(this).attr("data-id") }
 
         })
@@ -215,7 +287,7 @@
                 $.ajax({
 
                     method: "POST",
-                    url: '@Url.Action("Delete", "Category")', 
+                    url: '@Url.Action("Delete", "Category")',
                     data: { id: $(this).attr("data-id") }
 
                 })

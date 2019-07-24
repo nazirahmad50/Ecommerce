@@ -8,8 +8,11 @@ namespace Ecommerce.Web.ViewModels
 {
     public class ProductTablesViewModels
     {
-        public int pageNo { get;  set; }
+        public string SearchTerm { get; set; }
 
         public List<Product> Products { get; set; }
+
+        public Pager Pager { get; set; }
+
     }
 }

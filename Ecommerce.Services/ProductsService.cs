@@ -61,24 +61,69 @@ namespace Ecommerce.Services // services are used to communicate between the Web
                 context.SaveChanges(); // will save it into the database
             }
 
+
+        }
+
+
+        public List<Product> GetAllProducts()
+        {
+
+            using (var context = new CBContext())
+            {
+
+                return context.Products.Include(x => x.Category).ToList();
+
+
+            }
+
+        }
+
+        public int GetProductsCount()
+        {
+
+            using (var context = new CBContext())
+            {
+
+                return context.Products.Count();
+
+
+            }
+
         }
 
         /// <summary>
         /// Get all products with Category included
         /// </summary>
-        public List<Product> GetProducts(int pageNo)
+        public List<Product> GetProducts(string search, int pageNo)
         {
-            //int pageSize = 10;
+            int pageSize = int.Parse(ConfigurationService.Instance.GetConfig("PageSize").Value); // get the page size from the config key
 
             using (var context = new CBContext())
             {
-                //return context.Products.OrderBy(x =>x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList(); 
-                
-                return context.Products.Include(x=>x.Category).ToList(); // 'Include' method will include the 'Category' for every product              
-                
+                if (!string.IsNullOrEmpty(search)) // check if 'search' param holds a value
+                {
+                    return context.Products
+                        .Where(x => x.Name != null && x.Name.ToLower().Contains(search.ToLower()))
+                        .OrderBy(x => x.ID)
+                        .Skip((pageNo - 1) * pageSize)
+                        .Take(pageSize)
+                        .Include(x => x.Category)
+                        .ToList();
+                }
+                else // return all categories 
+                {
+                    return context.Products
+                        .OrderBy(x => x.ID)
+                        .Skip((pageNo - 1) * pageSize)
+                        .Take(pageSize)
+                        .Include(x => x.Category)
+                        .ToList();
+
+                }
 
 
             }
+
 
 
         }
