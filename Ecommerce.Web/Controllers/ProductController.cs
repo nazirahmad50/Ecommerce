@@ -19,7 +19,7 @@ namespace Ecommerce.Web.Controllers
 
         // the value for the 'search' parameter will be recieved through ajax
         public ActionResult ProductsTable(string search, int? pageNo) // '?' means that the var pageNo can be nullable
-       {
+        {
 
 
             // if pageNo has a value and its value is greater than 0 then set mode.pageNo to that pageNo value
@@ -72,22 +72,30 @@ namespace Ecommerce.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProductViewModels model)
         {
-
-
-            var newProduct = new Product
+            // Checks if there is any issues with the data posted to the server, based on the data annotations added to the properties of your model.
+            if (ModelState.IsValid)
             {
-                // set all the properties in the 'ProductViewModels' to the properties in the 'Product' (entity)
-                Name = model.Name,
-                Description = model.Description,
-                Price = model.Price,
-                ImageURL = model.ImageURL,
-                isFeatured = model.isFeatured,
-                Category = CategoriesService.Instance.GetCategory(model.CategoryId)
-            }; 
+                var newProduct = new Product
+                {
+                    // set all the properties in the 'ProductViewModels' to the properties in the 'Product' (entity)
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    ImageURL = model.ImageURL,
+                    isFeatured = model.isFeatured,
+                    Category = CategoriesService.Instance.GetCategory(model.CategoryId)
+                };
 
-            ProductsService.Instance.SaveProduct(newProduct); 
+                ProductsService.Instance.SaveProduct(newProduct);
 
-            return RedirectToAction("ProductsTable");
+                return RedirectToAction("ProductsTable");
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
+
         }
 
 
@@ -117,34 +125,46 @@ namespace Ecommerce.Web.Controllers
             return PartialView(model);
         }
 
+
+
+
+
         [HttpPost]
         public ActionResult Edit(ProductViewModels model)
         {
+            if (ModelState.IsValid)
+            {
+                var existingProduct = ProductsService.Instance.GetProduct(model.ID);
 
-            var existingProduct = ProductsService.Instance.GetProduct(model.ID);
-
-            existingProduct.Name = model.Name;
-            existingProduct.Description = model.Description;
-            existingProduct.Price = model.Price;
-            existingProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryId);
-            existingProduct.ImageURL = model.ImageURL;
-            existingProduct.isFeatured = model.isFeatured;
+                existingProduct.Name = model.Name;
+                existingProduct.Description = model.Description;
+                existingProduct.Price = model.Price;
+                existingProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryId);
+                existingProduct.ImageURL = model.ImageURL;
+                existingProduct.isFeatured = model.isFeatured;
 
 
 
 
-            ProductsService.Instance.UpdatepProduct(existingProduct); 
+                ProductsService.Instance.UpdatepProduct(existingProduct);
 
-            return RedirectToAction("ProductsTable");
+                return RedirectToAction("ProductsTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+
+            }
+
         }
 
         [HttpPost]
-        public ActionResult Delete(int id)
-        {
+    public ActionResult Delete(int id)
+    {
 
-            ProductsService.Instance.DeleteProduct(id); 
+        ProductsService.Instance.DeleteProduct(id);
 
-            return RedirectToAction("ProductsTable");
-        }
+        return RedirectToAction("ProductsTable");
+    }
     }
 }

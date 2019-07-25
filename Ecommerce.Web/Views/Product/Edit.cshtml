@@ -2,13 +2,15 @@
 @{
     ViewBag.Title = "Edit";
 
-    
+
     var trueChecked = Model.isFeatured ? "checked" : string.Empty;
     var falseChecked = !Model.isFeatured ? "checked" : string.Empty;
 
-      var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/system/placeholder.jpg";
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/system/placeholder.jpg";
 
 }
+
+
 
 <h2>Edit Product</h2>
 
@@ -32,7 +34,7 @@
             </div>
 
             <div class="form-group">
-                <label>Name</label>
+                <span class="text-danger">*</span><label>Name</label>
                 <input class="form-control" name="Name" value="@Model.Name" />
 
             </div>
@@ -93,7 +95,7 @@
 
 <script>
 
-     $("#imgUpload").change(function () {
+    $("#imgUpload").change(function () {
 
         var formData = new FormData(); // create FormData object to add a file into
 
@@ -131,36 +133,67 @@
                 alert("Fail");
             });
 
-    })
+    });
 
+        $('#editProduct').validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+
+            },
+            Description: {
+                maxlength: 500
+
+            }
+        }
+    });
 
     $("#updateBtn").click(function () {
 
+        if ($('#editProduct').valid()) {
 
-        $.ajax({
+            $.ajax({
 
-            method: "POST",
-            url: '@Url.Action("Edit", "Product")', 
-            // 'serialize' will get the values for every input field
-            // it will look like this e.g. - Name=p1&Description=None&Price=10.00
-            data: $("#editProduct").serialize()
-
-        })
-            .done(function (response) { // the response returns an html with values
-
-                $("#tableDiv").html(response);
-                $("#actionContainer").html(""); // empty the form so it ill disapear from the view
-
-                focusAction("tableDiv");
+                method: "POST",
+                url: '@Url.Action("Edit", "Product")',
+                // 'serialize' will get the values for every input field
+                // it will look like this e.g. - Name=p1&Description=None&Price=10.00
+                data: $("#editProduct").serialize()
 
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Fail");
-            });
+                .done(function (response) { // the response returns an html with values
+
+                    $("#tableDiv").html(response);
+                    $("#actionContainer").html(""); // empty the form so it ill disapear from the view
+
+                    focusAction("tableDiv");
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    alert("failed");
+
+                });
+
+        } else {
+
+            Swal.fire({
+                title: 'Warning',
+                text: 'Please enter all required fields',
+                type: 'warning',
+                showCancelButton: true,
+                showConfirmButton: true
+            })
+        }
+
+
     });
 
-    
-      $("#cancelBtn").click(function () {
+
+
+    $("#cancelBtn").click(function () {
 
 
            $("#actionContainer").html("");
@@ -168,6 +201,7 @@
            focusAction("tableDiv");
 
            });
+
 
 
 

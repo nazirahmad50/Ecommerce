@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
 
-                <label>Name</label>
+                <span class="text-danger">*</span><label>Name</label>
                 <input class="form-control" name="Name" />
             </div>
             <div class="form-group">
@@ -122,29 +122,55 @@
             });
                     });
 
+     $('#createProduct').validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+
+            },
+            Description: {
+                maxlength: 500
+
+            }
+        }
+    });
 
 
     $("#createBtn").click(function () {
 
+        if ($('#createProduct').valid()) {
 
-        $.ajax({
+            $.ajax({
 
-            method: "POST",
-            url: '@Url.Action("Create", "Product")',
-            // 'serialize' will get the values for every input field
-            // it will look like this e.g. - Name=p1&Description=None&Price=10.00
-            data: $("#createProduct").serialize()
-
-        })
-            .done(function (response) { // the response returns an html with values
-
-                $("#tableDiv").html(response);
-                $("#actionContainer").html(""); // empty the form so it will disapear from the view
+                method: "POST",
+                url: '@Url.Action("Create", "Product")',
+                // 'serialize' will get the values for every input field
+                // it will look like this e.g. - Name=p1&Description=None&Price=10.00
+                data: $("#createProduct").serialize()
 
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Fail");
-            });
+                .done(function (response) { // the response returns an html with values
+
+                    $("#tableDiv").html(response);
+                    $("#actionContainer").html(""); // empty the form so it will disapear from the view
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Fail");
+                });
+
+        } else {
+             Swal.fire({
+                title: 'Warning',
+                text: 'Please enter all required fields',
+                type: 'warning',
+                showCancelButton: true,
+                showConfirmButton: true
+            })
+        }
+       
     });
 
 
