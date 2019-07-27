@@ -35,7 +35,7 @@
                 <li class="product-item @item.Category.Name">
 
                     <div class="product-thumb clearfix">
-                        <a href="#" class="product-thumb">
+                        <a href="@Url.Action("Details", "Product", new { id = item.ID})" class="product-thumb">
                             <img src="@imgURL" alt="image" style="height:300px;">
                         </a>
 
@@ -50,7 +50,7 @@
                         <span class="product-title">@item.Name</span>
                         <div class="price">
                             <ins>
-                                <span class="amount">$ @item.Price</span>
+                                <span class="amount">$@item.Price</span>
                             </ins>
                         </div>
                     </div>

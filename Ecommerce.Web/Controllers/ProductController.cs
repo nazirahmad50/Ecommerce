@@ -166,5 +166,17 @@ namespace Ecommerce.Web.Controllers
 
         return RedirectToAction("ProductsTable");
     }
+
+
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+
+            var product = ProductsService.Instance.GetProduct(id);
+
+
+            return View(product);
+        }
     }
 }
