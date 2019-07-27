@@ -38,23 +38,23 @@
                                         </div>
                                     </li>
                                     @*<li data-thumb="images/shop/sh-detail/thumb-detail-02.jpg">
-                                        <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
-                                        <div class="flat-icon style-1">
-                                            <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
-                                        </div>
-                                    </li>
-                                    <li data-thumb="images/shop/sh-detail/thumb-detail-03.jpg">
-                                        <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
-                                        <div class="flat-icon style-1">
-                                            <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
-                                        </div>
-                                    </li>
-                                    <li data-thumb="images/shop/sh-detail/thumb-detail-04.jpg">
-                                        <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
-                                        <div class="flat-icon style-1">
-                                            <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
-                                        </div>
-                                    </li>*@
+                                            <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
+                                            <div class="flat-icon style-1">
+                                                <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
+                                            </div>
+                                        </li>
+                                        <li data-thumb="images/shop/sh-detail/thumb-detail-03.jpg">
+                                            <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
+                                            <div class="flat-icon style-1">
+                                                <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
+                                            </div>
+                                        </li>
+                                        <li data-thumb="images/shop/sh-detail/thumb-detail-04.jpg">
+                                            <img src="images/shop/sh-detail/detail-01.jpg" alt="Image">
+                                            <div class="flat-icon style-1">
+                                                <a href="images/shop/sh-detail/detail-01.jpg" class="zoom-popup"><span class="fa fa-search-plus"></span></a>
+                                            </div>
+                                        </li>*@
                                 </ul>
                             </div><!-- /.flexslider -->
                         </div>
@@ -73,44 +73,44 @@
                                     <i class="fa fa-star-half-o"></i>
                                     <i class="fa fa-star-half-o"></i>
                                     <span>(1)</span>*@
-                                </div>
-                                <p>@Model.Description</p>
-                                <div class="price">
-                                    <ins><span class="amount">$@Model.Price</span></ins>
-                                </div>
-                               
-                             
-                                <div class="product-quantity">
-                                    <div class="quantity">
-                                        <input type="text" value="1" name="quantity-number" class="quantity-number">
-                                        <span class="inc quantity-button">+</span>
-                                        <span class="dec quantity-button">-</span>
-                                    </div>
-                                    <div class="add-to-cart">
-                                        <a href="#">ADD TO CART</a>
-                                    </div>
-                                    <div class="box-like">
-                                        <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-categories">
-                                    <span>Categories: </span><a href="#">@Model.Category.Name</a> 
-                                </div>
-                               
-                                <ul class="flat-socials">
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
                             </div>
+                            <p>@Model.Description</p>
+                            <div class="price">
+                                <ins><span class="amount">$@Model.Price</span></ins>
+                            </div>
+
+
+                            <div class="product-quantity">
+                                <div class="quantity">
+                                    <input type="text" value="1" name="quantity-number" class="quantity-number">
+                                    <span class="inc quantity-button">+</span>
+                                    <span class="dec quantity-button">-</span>
+                                </div>
+                                <div class="add-to-cart">
+                                    <a href="#">ADD TO CART</a>
+                                </div>
+                                <div class="box-like">
+                                    <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-categories">
+                                <span>Categories: </span><a href="#">@Model.Category.Name</a>
+                            </div>
+
+                            <ul class="flat-socials">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            </ul>
                         </div>
-                    </div><!-- /.product-detail -->
-                </div>
-            </div><!-- /.row -->
-       
-    
+                    </div>
+                </div><!-- /.product-detail -->
+            </div>
+        </div><!-- /.row -->
+
+
     </section><!-- /.flat-row -->
 
     <section class="flat-row shop-detail-content">
@@ -120,7 +120,7 @@
                     <div class="flat-tabs style-1 has-border">
                         <div class="inner">
                             <ul class="menu-tab">
-                    
+
                                 <li class="active">Reviews</li>
                             </ul>
                             <div class="content-tab">
@@ -212,5 +212,21 @@
             </div>
         </div>
     </section><!-- /.shop-detail-content -->
+
+    <!--Related Products-->
+    <section class="flat-row shop-related">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="title-section margin-bottom-55">
+                        <h2 class="title">Related Products</h2>
+                    </div>
+
+                    @{Html.RenderAction("Products", "Widgets", new { isLatestproduct = false, categoryId = Model.Category.ID });}
+                   
+                </div>
+            </div><!-- /.row -->
+        </div>
+    </section>
 
 }

@@ -160,7 +160,10 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public List<Product> GetProductsByCategory(int pageNo, int pageSize)
+        /// <summary>
+        /// Get Products by Category for Home Page
+        /// <returns></returns>
+        public List<Product> GetProductsByCategoryHome(int pageNo, int pageSize)
         {
             using (var context = new CBContext())
             {
@@ -174,6 +177,27 @@ namespace Ecommerce.Services // services are used to communicate between the Web
             }
 
         }
+
+
+        /// <summary>
+        /// Get Products by Category for Product Details Page
+        /// <returns></returns>
+        public List<Product> GetProductsByCategoryDetails(int categoryId, int pageSize)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products
+                        .Where(x => x.Category.ID == categoryId)
+                       .OrderByDescending(x => x.ID) // order by the latest products added
+                       .Take(pageSize)
+                       .Include(x => x.Category)
+                       .ToList();
+
+            }
+
+        }
+
+
         #endregion
 
 
