@@ -1,19 +1,38 @@
 ﻿@model Ecommerce.Web.ViewModels.ProductsWidgetsViewModel
 
-@{ 
+@{
     var defaultImg = "/Content/images/system/placeholder.jpg";
 }
 
 @if (Model != null && Model.Products != null)
 {
+
+
+    if (!Model.isLatestProduct) // if its products by category
+    {
+        <ul class="flat-filter style-1 text-center max-width-682 clearfix">
+            <li class="active"><a href="#" data-filter="*">All Product</a></li>
+
+
+            @foreach (var cat in Model.Products.Select(x => x.Category).ToList().Distinct()) // select categorey of product and turn to list and get unique categories
+            {
+                <li><a href="#" data-filter=".@cat.Name">For @cat.Name</a></li>
+
+            }
+
+        </ul>
+        <div class="divider h54"></div>
+
+    }
+
     <div class="product-content product-fourcolumn clearfix">
-        <ul class="product style2 clearfix">
+        <ul class="product style2 isotope-product clearfix">
 
             @foreach (var item in Model.Products)
             {
                 var imgURL = string.IsNullOrEmpty(item.ImageURL) ? defaultImg : item.ImageURL;
 
-                <li class="product-item">
+                <li class="product-item @item.Category.Name">
 
                     <div class="product-thumb clearfix">
                         <a href="#" class="product-thumb">
@@ -26,7 +45,7 @@
 
                         }
                     </div>
-                    
+
                     <div class="product-info text-center clearfix">
                         <span class="product-title">@item.Name</span>
                         <div class="price">
