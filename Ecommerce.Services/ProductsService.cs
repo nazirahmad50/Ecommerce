@@ -13,7 +13,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
     public class ProductsService
     {
 
-        
+
 
         #region Singleton
         public static ProductsService Instance
@@ -28,6 +28,8 @@ namespace Ecommerce.Services // services are used to communicate between the Web
             }
         }
 
+     
+
         private static ProductsService instance { get; set; }
 
         private ProductsService()
@@ -37,7 +39,83 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         #endregion
 
 
+        #region Shop
+        public int GetMaximumPrice()
+        {
+            using (var context = new CBContext())
+            {
+                return (int)context.Products.Max(x => x.Price);
 
+            }
+        }
+
+        public List<Product> SearchProducts(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? sortBy)
+        {
+
+            using (var context = new CBContext())
+            {
+
+                var products = context.Products.ToList();
+                
+
+                if (categoryId.HasValue)
+                {
+                     products = products
+                         .Where(x => x.Category.ID == categoryId.Value)
+                         .ToList();
+                }
+
+                if (!string.IsNullOrEmpty(searchTerm)) // check if 'search' param holds a value
+                {
+                    products = products
+                        .Where(x => x.Name != null && x.Name.ToLower().Contains(searchTerm.ToLower()))
+                        .ToList();
+                }
+
+                if (minimumPrice.HasValue)
+                {
+                    products = products
+                        .Where(x => x.Price >= minimumPrice.Value)
+                        .ToList();
+                }
+
+                if (maximumPrice.HasValue)
+                {
+                    products = products
+                        .Where(x => x.Price <= maximumPrice.Value)
+                        .ToList();
+                }
+
+                if (sortBy.HasValue)
+                {
+                    switch (sortBy.Value)
+                    {
+     
+                        case 2: //TODO: need to fix popularity
+                            products = products.OrderByDescending(x => x.ID).ToList();
+                            break;
+                        case 3:
+                            products = products.OrderBy(x => x.Price).ToList();
+                            break;
+                        case 4:
+                            products = products.OrderByDescending(x => x.Price).ToList();
+                            break;
+
+                        default: // this is enum 1
+                            products = products.OrderByDescending(x => x.ID).ToList();
+                            break;
+                    }
+                }
+
+                return products;
+
+
+            }
+
+        }
+
+
+        #endregion
 
         #region CRUD & Pagination
 
@@ -154,7 +232,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
                     .OrderByDescending(x => x.ID)
                     .Take(numbOfProducts)
                     .Include(x => x.Category)
-                    .ToList(); 
+                    .ToList();
 
             }
 
@@ -199,6 +277,8 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
 
         #endregion
+
+
 
 
 

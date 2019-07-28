@@ -11,9 +11,23 @@ namespace Ecommerce.Web.Controllers
     public class ShopController : Controller
     {
 
-        public ActionResult Checkout()
+        public ActionResult Index(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? sortBy = 1)
         {
-            CheckoutViewModels model = new CheckoutViewModels();
+            ShopViewModel model = new ShopViewModel {
+
+                FeaturedCategories = CategoriesService.Instance.GetFeaturedCategories(),
+                MaximumPrice = ProductsService.Instance.GetMaximumPrice(),
+                Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy),
+                SortBy = sortBy.Value
+               
+            };
+
+
+            return View(model);
+        }
+            public ActionResult Checkout()
+        {
+            CheckoutViewModel model = new CheckoutViewModel();
 
             // 'request' Enables ASP.NET to read the HTTP values sent by a client during a Web request 
             var cartProductCokkie = Request.Cookies["cartProducts"]; // so we can get cookies based on their name through the 'Request' prop
