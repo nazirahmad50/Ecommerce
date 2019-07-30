@@ -25,7 +25,25 @@ namespace Ecommerce.Web.Controllers
 
             return View(model);
         }
-            public ActionResult Checkout()
+
+
+        // List of products partial View
+        public ActionResult FilterProducts(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? sortBy = 1)
+        {
+            FilterProductsViewModel model = new FilterProductsViewModel
+            {
+                Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy),
+             
+            };
+
+
+            return PartialView(model);
+        }
+
+
+
+
+        public ActionResult Checkout()
         {
             CheckoutViewModel model = new CheckoutViewModel();
 

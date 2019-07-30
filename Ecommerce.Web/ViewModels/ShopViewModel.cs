@@ -23,4 +23,11 @@ namespace Ecommerce.Web.ViewModels
 
 
     }
+
+    public class FilterProductsViewModel { 
+
+        public List<Product> Products { get; set; }
+
+
+    }
 }
