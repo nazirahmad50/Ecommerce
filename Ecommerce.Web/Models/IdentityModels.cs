@@ -21,7 +21,7 @@ namespace Ecommerce.Web.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("EcommerceConnection", throwIfV1Schema: false) // change database connection string to ours so users table can be saved in opur database
         {
         }
 

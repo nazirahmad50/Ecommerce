@@ -68,9 +68,13 @@
                                 <button type="submit" class="header-search-submit" title="Search">Search</button>
                             </form>
                         </li>
-                        <li class="box-login">
-                            <a class="icon_login" href="#"></a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="box-login">
+                                <a class="icon_login" href="#">@User.Identity.Name</a>
+                            </li>
+                        }
+
                         <li class="box-cart nav-top-cart-wrapper">
                             <a class="icon_cart nav-cart-trigger active" href="#"><span>3</span></a>
                             <div class="nav-shop-cart">
@@ -154,7 +158,7 @@
                             </form>
                             <ul class="flat-social">
 
-                       
+
 
                                 <li><a href="@ConfigurationService.Instance.GetConfig("FacebookURL").Value"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#">@ConfigurationService.Instance.GetConfig("TwitterURL").Value<i class="fa fa-twitter"></i></a></li>
