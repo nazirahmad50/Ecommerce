@@ -39,22 +39,14 @@
                             Sort By
                         </h5>
                         <ul>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Default })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty) ">Default - Newest</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Popularity })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceLowToHigh })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceHighToLow })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Default, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty) ">Default - Newest</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Popularity, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
+                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
                         </ul>
                     </div><!-- /.widget-sort-by -->
 
-                    <div class="widget widget-price">
-                        <h5 class="widget-title">Filter by price</h5>
-                        <div class="price-filter">
-                            <div id="slide-range"></div>
-                            <p class="amount">
-                                Price: <input type="text" id="amount" disabled="">
-                            </p>
-                        </div>
-                    </div>
+
                     <div class="widget widget_tag">
                         <h5 class="widget-title">
                             Featured Categories
@@ -65,13 +57,25 @@
                             {
                                 var active = Model.categoryId.HasValue && Model.categoryId == item.ID ? "active" : string.Empty;
 
-                                <a href="@Url.Action("Index", "Shop", new { categoryId = item.ID })" class="@active">@item.Name</a>
+                                <a href="@Url.Action("Index", "Shop", new { categoryId = item.ID, sortBy = Model.SortBy })" class="@active">@item.Name</a>
 
                             }
 
 
                         </div>
-                    </div><!-- /.widget -->
+                    </div><!-- /.widget tag -->
+
+                    <div class="widget widget-price">
+                        <h5 class="widget-title">Filter by price</h5>
+                        <div class="price-filter">
+                            <div id="slide-range"></div>
+                            <p class="amount">
+                                Price: <input type="text" id="amount" disabled="">
+                            </p>
+                        </div>
+                    </div><!-- /.widget price -->
+
+                    <a href="@Url.Action("Index", "Shop")" class="btn btn-danger">Reset Filters</a> <!-- /.Reset Fitlers button -->
                 </div><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
             <div class="col-md-9">
@@ -128,6 +132,7 @@
             method: "GET",
             url: '@Url.Action("FilterProducts", "Shop")',
             data: {
+                sortBy: '@Model.SortBy',
                 categoryId: '@Model.categoryId',
                 // get the prices from 'priceSlider' func
                 minimumPrice: priceSlider.slider("values", 0), 
