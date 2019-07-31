@@ -17,15 +17,24 @@ namespace Ecommerce.Web.ViewModels
     {
         public int MaximumPrice { get; set; }
         public int? SortBy { get; set; }
+        public int? categoryId { get; set; }
+
 
         public List<Product> Products { get; set; }
         public List<Category> FeaturedCategories { get; set; }
-        public int? categoryId { get; set; }
+
+        public Pager Pager { get; set; }
     }
 
-    public class FilterProductsViewModel { 
+    public class FilterProductsViewModel {
+
+
+        public int SortBy { get; set; }
+        public int? categoryId { get; set; }
 
         public List<Product> Products { get; set; }
+
+        public Pager Pager { get; set; }
 
 
     }

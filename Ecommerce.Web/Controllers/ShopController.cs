@@ -11,17 +11,23 @@ namespace Ecommerce.Web.Controllers
     public class ShopController : Controller
     {
 
-        public ActionResult Index(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? sortBy = 1)
+        public ActionResult Index(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? pageNo, int? sortBy = 1)
         {
-            ShopViewModel model = new ShopViewModel {
 
-                FeaturedCategories = CategoriesService.Instance.GetFeaturedCategories(),
-                MaximumPrice = ProductsService.Instance.GetMaximumPrice(),
-                Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy),
-                SortBy = sortBy.Value,
-                categoryId = categoryId
-               
-            };
+            ShopViewModel model = new ShopViewModel();
+
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1; // validate 'pageNo' value
+
+
+            model.FeaturedCategories = CategoriesService.Instance.GetFeaturedCategories(); // get featured categories
+            model.MaximumPrice = ProductsService.Instance.GetMaximumPrice(); // get maximum price of products
+            model.Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy, pageNo.Value, 10);
+            model.SortBy = sortBy.Value;
+            model.categoryId = categoryId;
+
+            int totalCount = ProductsService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy); // get total count of search Products
+
+            model.Pager = new Pager(totalCount, pageNo); // instantiate Pager
 
 
             return View(model);
@@ -29,13 +35,21 @@ namespace Ecommerce.Web.Controllers
 
 
         // List of products partial View
-        public ActionResult FilterProducts(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? sortBy = 1)
+        // the View of this action will only include the list of products
+        public ActionResult FilterProducts(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? pageNo, int? sortBy = 1)
         {
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1; // validate 'pageNo' value
+
+
             FilterProductsViewModel model = new FilterProductsViewModel
             {
-                Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy),
-             
+                Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy, pageNo.Value, 10),
+                SortBy = sortBy.Value,
+                categoryId = categoryId
             };
+
+            int totalCount = ProductsService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy); // get total count of search Products
+            model.Pager = new Pager(totalCount, pageNo); // instantiate Pager
 
 
             return PartialView(model);

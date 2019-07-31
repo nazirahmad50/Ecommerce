@@ -45,8 +45,7 @@
                             <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
                         </ul>
                     </div><!-- /.widget-sort-by -->
-
-
+                    <!-- Featured Categories -->
                     <div class="widget widget_tag">
                         <h5 class="widget-title">
                             Featured Categories
@@ -63,8 +62,9 @@
 
 
                         </div>
-                    </div><!-- /.widget tag -->
+                    </div>
 
+                    <!-- Filter Price Slider -->
                     <div class="widget widget-price">
                         <h5 class="widget-title">Filter by price</h5>
                         <div class="price-filter">
@@ -73,22 +73,24 @@
                                 Price: <input type="text" id="amount" disabled="">
                             </p>
                         </div>
-                    </div><!-- /.widget price -->
+                    </div>
 
                     <a href="@Url.Action("Index", "Shop")" class="btn btn-danger">Reset Filters</a> <!-- /.Reset Fitlers button -->
                 </div><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
             <div class="col-md-9">
-                <div class="filter-shop clearfix">
-                    <p class="showing-product float-right">
-                        Showing 1–12 of 56 Products
-                    </p>
-                </div><!-- /.filte-shop -->
 
+                <!-- Products List -->
                 <div id="productsDiv">
                     @{
-                        var filterProducts = new FilterProductsViewModel();
-                        filterProducts.Products = Model.Products; 
+                        var filterProducts = new FilterProductsViewModel
+                        {
+                            Products = Model.Products,
+                            Pager = Model.Pager,
+
+                            SortBy = Model.SortBy.Value,
+                            categoryId = Model.categoryId
+                        };
 
                         Html.RenderPartial("FilterProducts", filterProducts);
                     }
@@ -103,28 +105,24 @@
 
     var CallTimeout;
 
-    var priceSlider = $("#slide-range").slider({
+         var priceSlider = $("#slide-range").slider({
+            range: true,
+            min: 0,
+            max: @Model.MaximumPrice,
+            values: [0, @Model.MaximumPrice], // initaly the values will be
+            slide: function (event, ui) {
 
-        range: true,
-        min: 0,
-        max: @Model.MaximumPrice,
-        values: [0, @Model.MaximumPrice], // initaly the values will be
-        slide: function (event, ui) {
+                var minPrice = ui.values[0]; // get the first element from 'values' array whhich is 0
+                var maxPrice = ui.values[1]; // get the second element from 'values' array whhich is max price
 
-            var minPrice = ui.values[0]; // get the first element from 'values' array whhich is 0
-            var maxPrice = ui.values[1]; // get the second element from 'values' array whhich is max price
+                $("#amount").val("$" + minPrice + ".00" + " - " + "$" + maxPrice + ".00");
 
-            $("#amount").val("$" + minPrice + ".00" + " - " + "$" + maxPrice + ".00");
+                clearTimeout(CallTimeout) // clear 'CallTimeout' var
 
-            clearTimeout(CallTimeout) // clear 'CallTimeout' var
-
-            CallTimeout = setTimeout(getData, 500); // call the 'getData' func after 0.5 sec everytime the slider is moved
-
-            
-
+                CallTimeout = setTimeout(getData, 500); // call the 'getData' func after 0.5 sec everytime the slider is moved
 
         }
-    })
+         })
 
     function getData() {
 
@@ -135,23 +133,23 @@
                 sortBy: '@Model.SortBy',
                 categoryId: '@Model.categoryId',
                 // get the prices from 'priceSlider' func
-                minimumPrice: priceSlider.slider("values", 0), 
+                minimumPrice: priceSlider.slider("values", 0),
                 maximumPrice: priceSlider.slider("values", 1)
             }
 
-            })
-                .done(function (response) { // the response returns an html with values
+             })
+            .done(function (response) { // the response returns an html with values
 
-                    $("#productsDiv").html(response); // display the response in 'productsDiv' where we are calling the 'FilterProducts' partial view
+               $("#productsDiv").html(response); // display the response in 'productsDiv' where we are calling the 'FilterProducts' partial view
 
 
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-                    alert("failed");
+                alert("failed");
 
-                });
-    }
+               });
+             }
 
 
 </script>

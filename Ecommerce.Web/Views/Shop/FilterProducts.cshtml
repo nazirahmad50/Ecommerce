@@ -1,9 +1,23 @@
 ﻿@model Ecommerce.Web.ViewModels.FilterProductsViewModel
 
-@{ 
-       var defaultImg = "/Content/images/system/placeholder.jpg";
+@{
+    var defaultImg = "/Content/images/system/placeholder.jpg";
 }
 
+<!--Showing Products-->
+<div class="filter-shop clearfix">
+    <p class="showing-product float-right">
+        Showing
+        @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize)
+        + 1)
+        –
+        @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize)
+        + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize))
+        of @Model.Pager.TotalItems Products
+    </p>
+</div>
+
+<!--Products List-->
 <div class="product-content product-threecolumn product-slidebar clearfix">
     <ul class="product style2 sd1">
 
@@ -38,14 +52,46 @@
 
     </ul><!-- /.product -->
 </div><!-- /.product-content -->
-<div class="product-pagination text-center clearfix">
-    <ul class="flat-pagination">
-        <li class="prev">
-            <a href="#"><i class="fa fa-angle-left"></i></a>
-        </li>
-        <li><a href="#">1</a></li>
-        <li class="active"><a href="#" title="">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-    </ul><!-- /.flat-pagination -->
-</div>
+
+
+<!--Pagination-->
+<!--Same as category pagination but with 'a href' not buttons -->
+@if (Model.Pager != null) // if pages is not null
+{
+    <div class="product-pagination text-center clearfix">
+
+        <ul class="flat-pagination">
+
+            <!--if current page is more than 1-->
+            @if (Model.Pager.CurrentPage > 1) // start pages
+            {
+                // show previous page buttons
+
+                <li class="prev">
+                    <a href="@Url.Action("Index", "Shop", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryId = Model.categoryId })"><i class="fa fa-angle-left"></i></a>
+                </li>
+
+            }
+
+            <!--loop through as long as the start page is less than or equal to the end page-->
+            @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++) // the middle pages
+            {
+                string activeClass = Model.Pager.CurrentPage == page ? " active bg-info" : string.Empty;
+
+                <li class="@activeClass"><a href="@Url.Action("Index", "Shop", new { pageNo = page, sortBy = Model.SortBy, categoryId = Model.categoryId })" title="">@page</a></li>
+
+            }
+
+            <!--if the current page is less than the total pages, means if current page is not on the last page-->
+            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages) // the last pages
+            {
+                // show next buttons
+                <li><a href="@Url.Action("Index", "Shop", new { pageNo = Model.Pager.EndPage, sortBy = Model.SortBy, categoryId = Model.categoryId })"><i class="fa fa-angle-right"></i></a></li>
+
+            }
+
+
+        </ul>
+    </div>
+
+}
