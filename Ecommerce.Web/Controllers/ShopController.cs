@@ -18,7 +18,8 @@ namespace Ecommerce.Web.Controllers
                 FeaturedCategories = CategoriesService.Instance.GetFeaturedCategories(),
                 MaximumPrice = ProductsService.Instance.GetMaximumPrice(),
                 Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy),
-                SortBy = sortBy.Value
+                SortBy = sortBy.Value,
+                categoryId = categoryId
                
             };
 

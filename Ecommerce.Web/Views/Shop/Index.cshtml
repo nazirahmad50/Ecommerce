@@ -63,7 +63,9 @@
 
                             @foreach (var item in Model.FeaturedCategories)
                             {
-                                <a href="@Url.Action("Index", "Shop", new { categoryId = item.ID })">@item.Name</a>
+                                var active = Model.categoryId.HasValue && Model.categoryId == item.ID ? "active" : string.Empty;
+
+                                <a href="@Url.Action("Index", "Shop", new { categoryId = item.ID })" class="@active">@item.Name</a>
 
                             }
 
@@ -126,6 +128,7 @@
             method: "GET",
             url: '@Url.Action("FilterProducts", "Shop")',
             data: {
+                categoryId: '@Model.categoryId',
                 // get the prices from 'priceSlider' func
                 minimumPrice: priceSlider.slider("values", 0), 
                 maximumPrice: priceSlider.slider("values", 1)

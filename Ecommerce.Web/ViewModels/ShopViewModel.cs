@@ -20,8 +20,7 @@ namespace Ecommerce.Web.ViewModels
 
         public List<Product> Products { get; set; }
         public List<Category> FeaturedCategories { get; set; }
-
-
+        public int? categoryId { get; set; }
     }
 
     public class FilterProductsViewModel { 
