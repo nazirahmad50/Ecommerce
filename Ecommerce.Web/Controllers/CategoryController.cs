@@ -31,7 +31,7 @@ namespace Ecommerce.Web.Controllers
             var totalRecords = CategoriesService.Instance.GetCategoriesCount(search); // get total categories
 
             // get categories and set it in model
-            CategorySearchViewModels model = new CategorySearchViewModels
+            CategorySearchViewModel model = new CategorySearchViewModel
             {
                 Categories = CategoriesService.Instance.GetCategories(search, pageNo.Value)
             };
@@ -79,16 +79,48 @@ namespace Ecommerce.Web.Controllers
             var category = CategoriesService.Instance.GetCategory(id); // call the method 'GetCategory' from categories service and set it to the variable 'categories'
 
 
-            return PartialView(category);
+            EditCategoryViewModel model = new EditCategoryViewModel
+            {
+                ID = category.ID,
+                Name = category.Name,
+                Description = category.Description,
+                ImageURL = category.ImageURL,
+                isFeatured = category.isFeatured
+            };
+
+            return PartialView(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(EditCategoryViewModel model)
         {
+            if (ModelState.IsValid)
+            {
 
-            CategoriesService.Instance.UpdateCategory(category); // pass the 'category' argument values to the method 'UpdateCategory'
+                var existingCategory = CategoriesService.Instance.GetCategory(model.ID);
 
-            return RedirectToAction("CategoriesTable"); // redirect to Index View
+                existingCategory.Name = model.Name;
+                existingCategory.Description = model.Description;
+                existingCategory.isFeatured = model.isFeatured;
+
+                if (!string.IsNullOrEmpty(model.ImageURL))
+                { // only add an image to category when the imageUrl is not empty
+
+                    existingCategory.ImageURL = model.ImageURL;
+
+                }
+
+
+                CategoriesService.Instance.UpdateCategory(existingCategory); // update category
+
+
+                return RedirectToAction("CategoriesTable"); // redirect to Index View
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+
+            }
         }
 
 

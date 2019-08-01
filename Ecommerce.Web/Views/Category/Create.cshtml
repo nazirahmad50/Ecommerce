@@ -103,26 +103,52 @@
 
     })
 
+    
+     $('#addCategory').validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+
+             },
+            Description: {
+                maxlength: 500
+
+            }
+        }
+    });
+
     $("#addBtn").click(function () {
+        if ($('#addCategory').valid()) {
 
 
-        $.ajax({
+            $.ajax({
 
-            method: "POST",
-            url: '@Url.Action("Create", "Category")',
-            data: $("#addCategory").serialize()
-
-        })
-            .done(function (response) { // the response returns an html with values
-
-                $("#tableDiv").html(response);
-                $("#createForm").html(""); // empty the form so it ill disapear from the view
-
+                method: "POST",
+                url: '@Url.Action("Create", "Category")',
+                data: $("#addCategory").serialize()
 
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Fail");
-            });
+                .done(function (response) { // the response returns an html with values
+
+                    $("#tableDiv").html(response);
+                    $("#createForm").html(""); // empty the form so it ill disapear from the view
+
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Fail");
+                });
+        } else {
+                Swal.fire({
+                title: 'Warning',
+                text: 'Please enter all required fields',
+                type: 'warning',
+                showCancelButton: true,
+                showConfirmButton: true
+            })
+        }
     });
 
           $("#cancelBtn").click(function () {

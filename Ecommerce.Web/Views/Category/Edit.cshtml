@@ -1,4 +1,4 @@
-﻿@model Ecommerce.Entities.Category
+﻿@model Ecommerce.Web.ViewModels.EditCategoryViewModel
 @{
     ViewBag.Title = "Edit";
 
@@ -110,30 +110,56 @@
                 alert("Fail");
             });
 
-    })
+        })
+
+      $('#editProduct').validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+
+                },
+
+            Description: {
+                maxlength: 500
+
+            }
+        }
+    });
 
     $("#updateBtn").click(function () {
 
+        if ($('#editProduct').valid()) {
 
-        $.ajax({
 
-            method: "POST",
-            url: '@Url.Action("Edit", "Category")',
-            data: $("#editProduct").serialize()
+            $.ajax({
 
-        })
-            .done(function (response) {
-
-                $("#tableDiv").html(response);
-                $("#createForm").html("");
-
-                focusAction("tableDiv");
+                method: "POST",
+                url: '@Url.Action("Edit", "Category")',
+                data: $("#editProduct").serialize()
 
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Fail");
-            });
+                .done(function (response) {
 
+                    $("#tableDiv").html(response);
+                    $("#createForm").html("");
+
+                    focusAction("tableDiv");
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Fail");
+                });
+        } else {
+             Swal.fire({
+                title: 'Warning',
+                text: 'Please enter all required fields',
+                type: 'warning',
+                showCancelButton: true,
+                showConfirmButton: true
+            })
+        }
     });
 
       $("#cancelBtn").click(function () {

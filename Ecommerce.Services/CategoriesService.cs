@@ -116,6 +116,9 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
+
+
+
         public void UpdateCategory(Category category)
         {
             using (var context = new CBContext())
@@ -126,6 +129,7 @@ namespace Ecommerce.Services // services are used to communicate between the Web
             }
 
         }
+
 
         public void DeleteCategory(int ID)
         {

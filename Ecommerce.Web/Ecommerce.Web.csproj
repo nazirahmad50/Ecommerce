@@ -186,7 +186,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BaseListingModel.cs" />
-    <Compile Include="ViewModels\CategorySearchViewModels.cs" />
+    <Compile Include="ViewModels\CategoryViewModels.cs" />
     <Compile Include="ViewModels\ShopViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
     <Compile Include="ViewModels\ProductsWidgetsViewModel.cs" />

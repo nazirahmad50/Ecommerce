@@ -121,7 +121,7 @@
     <!--Pagination-->
     <div>
 
-        @if (Model.Pager != null) // if pages is not null
+        @if (Model.Pager != null && Model.Pager.TotalPages > 1) // if pages is not null
         {
             // if current page is more than 1
             if (Model.Pager.CurrentPage > 1) // start pages
