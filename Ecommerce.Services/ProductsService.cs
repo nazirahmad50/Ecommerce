@@ -253,7 +253,8 @@ namespace Ecommerce.Services // services are used to communicate between the Web
         {
             using (var context = new CBContext())
             {
-                context.Entry(product).State = System.Data.Entity.EntityState.Modified; // updates the categories database
+
+                context.Entry(product).State = System.Data.Entity.EntityState.Modified; // updates the products database 
                 context.SaveChanges();
 
             }

@@ -139,14 +139,17 @@ namespace Ecommerce.Web.Controllers
                 existingProduct.Name = model.Name;
                 existingProduct.Description = model.Description;
                 existingProduct.Price = model.Price;
-                existingProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryId);
                 existingProduct.isFeatured = model.isFeatured;
+
+                existingProduct.Category = null; // marked null as the reference key is changed below
+                existingProduct.CategoryID = model.CategoryId;
 
                 if (!string.IsNullOrEmpty(model.ImageURL))
                 {
                     existingProduct.ImageURL = model.ImageURL;
 
                 }
+
 
 
 
