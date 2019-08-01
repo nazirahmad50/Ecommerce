@@ -31,15 +31,6 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         #endregion
 
-        public void SaveCategory(Category category)
-        {
-            using (var context = new CBContext()) // create an object of 'CBContext' 
-            {
-                context.Categories.Add(category); // add 'category' argument to the database 'Categories', will be stored in memory not in database yet
-                context.SaveChanges(); // will save it into the database
-            }
-
-        }
 
 
         public List<Category> GetAllCategories()
@@ -55,7 +46,9 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public  List<Category> GetCategories(string search, int pageNo)
+
+        #region CRUD & Pagination
+        public List<Category> GetCategories(string search, int pageNo)
         {
             int pageSize = int.Parse(ConfigurationService.Instance.GetConfig("PageSize").Value); // get the page size from the config key
 
@@ -113,7 +106,43 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public  List<Category> GetFeaturedCategories()
+        public void SaveCategory(Category category)
+        {
+            using (var context = new CBContext()) // create an object of 'CBContext' 
+            {
+                context.Categories.Add(category); // add 'category' argument to the database 'Categories', will be stored in memory not in database yet
+                context.SaveChanges(); // will save it into the database
+            }
+
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            using (var context = new CBContext())
+            {
+                context.Entry(category).State = System.Data.Entity.EntityState.Modified; // updates the categories database
+                context.SaveChanges();
+
+            }
+
+        }
+
+        public void DeleteCategory(int ID)
+        {
+            using (var context = new CBContext())
+            {
+                var categoryToRemove = context.Categories.Where(x => x.ID == ID).Include(x => x.Products).FirstOrDefault();
+
+                context.Products.RemoveRange(categoryToRemove.Products); // remove products of the category before removing the category
+                context.Categories.Remove(categoryToRemove); // remove that category
+                context.SaveChanges();
+
+            }
+
+        }
+        #endregion
+
+        public List<Category> GetFeaturedCategories()
         {
             using (var context = new CBContext())
             {
@@ -133,28 +162,6 @@ namespace Ecommerce.Services // services are used to communicate between the Web
 
         }
 
-        public  void UpdateCategory(Category category)
-        {
-            using (var context = new CBContext())
-            {
-                context.Entry(category).State = System.Data.Entity.EntityState.Modified; // updates the categories database
-                context.SaveChanges(); 
 
-            }
-
-        }
-
-        public  void DeleteCategory(int ID)
-        {
-            using (var context = new CBContext())
-            {
-                var categoryToRemove = context.Categories.Find(ID); // find the category to remove based on the ID parameter
-
-                context.Categories.Remove(categoryToRemove); // remove that category
-                context.SaveChanges();
-
-            }
-
-        }
     }
 }
