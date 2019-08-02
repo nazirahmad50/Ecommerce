@@ -18,6 +18,7 @@ namespace Ecommerce.Web.ViewModels
         public int MaximumPrice { get; set; }
         public int? SortBy { get; set; }
         public int? categoryId { get; set; }
+        public string searchTerm { get; set; }
 
 
         public List<Product> Products { get; set; }
@@ -31,6 +32,7 @@ namespace Ecommerce.Web.ViewModels
 
         public int SortBy { get; set; }
         public int? categoryId { get; set; }
+        public string searchTerm { get; set; }
 
         public List<Product> Products { get; set; }
 

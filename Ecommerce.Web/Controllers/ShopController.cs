@@ -24,6 +24,8 @@ namespace Ecommerce.Web.Controllers
             model.Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy, pageNo.Value, 10);
             model.SortBy = sortBy.Value;
             model.categoryId = categoryId;
+            model.searchTerm = searchTerm;
+
 
             int totalCount = ProductsService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy); // get total count of search Products
 
@@ -45,7 +47,8 @@ namespace Ecommerce.Web.Controllers
             {
                 Products = ProductsService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy, pageNo.Value, 10),
                 SortBy = sortBy.Value,
-                categoryId = categoryId
+                categoryId = categoryId,
+                searchTerm = searchTerm
             };
 
             int totalCount = ProductsService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryId, sortBy); // get total count of search Products

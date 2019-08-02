@@ -52,8 +52,6 @@
 
     </ul><!-- /.product -->
 </div><!-- /.product-content -->
-
-
 <!--Pagination-->
 <!--Same as category pagination but with 'a href' not buttons -->
 @if (Model.Pager != null) // if pages is not null
@@ -68,7 +66,7 @@
                 // show previous page buttons
 
                 <li class="prev">
-                    <a href="@Url.Action("Index", "Shop", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryId = Model.categoryId })"><i class="fa fa-angle-left"></i></a>
+                    <a data-href="@Url.Action("FilterProducts", "Shop", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryId = Model.categoryId })" class="pageDataLink"><i class="fa fa-angle-left"></i></a>
                 </li>
 
             }
@@ -78,7 +76,7 @@
             {
                 string activeClass = Model.Pager.CurrentPage == page ? " active bg-info" : string.Empty;
 
-                <li class="@activeClass"><a href="@Url.Action("Index", "Shop", new { pageNo = page, sortBy = Model.SortBy, categoryId = Model.categoryId })" title="">@page</a></li>
+                <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Shop", new { pageNo = page, sortBy = Model.SortBy, categoryId = Model.categoryId })" class="pageDataLink" title="">@page</a></li>
 
             }
 
@@ -86,7 +84,7 @@
             @if (Model.Pager.CurrentPage < Model.Pager.TotalPages) // the last pages
             {
                 // show next buttons
-                <li><a href="@Url.Action("Index", "Shop", new { pageNo = Model.Pager.EndPage, sortBy = Model.SortBy, categoryId = Model.categoryId })"><i class="fa fa-angle-right"></i></a></li>
+                <li><a  data-href="@Url.Action("FilterProducts", "Shop", new { pageNo = Model.Pager.EndPage, sortBy = Model.SortBy, categoryId = Model.categoryId })" class="pageDataLink"><i class="fa fa-angle-right"></i></a></li>
 
             }
 
@@ -94,4 +92,29 @@
         </ul>
     </div>
 
+    // these hidden fields are used in index view
+    <input type="hidden" id="searchTerm" value="@Model.searchTerm" />
+    <input type="hidden" id="sortBy" value="@Model.SortBy" />
+    <input type="hidden" id="categoryId" value="@Model.categoryId" />
+
+
 }
+
+<script>
+
+    // this will work on the pagination only
+    $(".pageDataLink").click(function () {
+
+        var url = $(this).attr("data-href");
+
+        if (url != null && url != undefined) {
+
+            GetDataUrl(url); // call the 'GetDataUrl' func which is in index view
+        }
+
+    })
+
+
+
+
+</script>

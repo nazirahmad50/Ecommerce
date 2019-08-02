@@ -377,6 +377,7 @@
       });
     };
 
+
     //var flatPrice = function() {
     //    if( $().slider ) {
     //        $( function() {
@@ -806,7 +807,8 @@
     
    	// Dom Ready
 	$(function() {
-      removePreloader();
+        removePreloader();
+        showLoader();
       goTop();
       parallax(); 
       flatRetinaLogo();

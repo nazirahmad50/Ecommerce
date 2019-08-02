@@ -29,7 +29,7 @@
                     <div class="widget widget-search">
                         <form role="search" method="get" class="search-form" action="@Url.Action("Index", "Shop")">
                             <label>
-                                <input type="search" class="search-field" placeholder="Search …" value="" name="searchTerm">
+                                <input type="search" class="search-field" placeholder="Search …" value="@Model.searchTerm" name="searchTerm">
                             </label>
                             <input type="submit" class="search-submit" value="Search">
                         </form>
@@ -39,10 +39,10 @@
                             Sort By
                         </h5>
                         <ul>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Default, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty) ">Default - Newest</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.Popularity, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryId = Model.categoryId })" class="@(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
+                            <li><a  data-href="@Url.Action("FilterProducts", "Shop", new { sortBy = (int)SortByEnums.Default, categoryId = Model.categoryId })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty) ">Default - Newest</a></li>
+                            <li><a  data-href="@Url.Action("FilterProducts", "Shop", new { sortBy = (int)SortByEnums.Popularity, categoryId = Model.categoryId })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
+                            <li><a  data-href="@Url.Action("FilterProducts", "Shop", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryId = Model.categoryId })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
+                            <li><a  data-href="@Url.Action("FilterProducts", "Shop", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryId = Model.categoryId })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
                         </ul>
                     </div><!-- /.widget-sort-by -->
                     <!-- Featured Categories -->
@@ -56,7 +56,7 @@
                             {
                                 var active = Model.categoryId.HasValue && Model.categoryId == item.ID ? "active" : string.Empty;
 
-                                <a href="@Url.Action("Index", "Shop", new { categoryId = item.ID, sortBy = Model.SortBy })" class="@active">@item.Name</a>
+                                <a data-href="@Url.Action("FilterProducts", "Shop", new { categoryId = item.ID, sortBy = Model.SortBy })" class="dataLink @active">@item.Name</a>
 
                             }
 
@@ -119,19 +119,20 @@
 
                 clearTimeout(CallTimeout) // clear 'CallTimeout' var
 
-                CallTimeout = setTimeout(getData, 500); // call the 'getData' func after 0.5 sec everytime the slider is moved
+                CallTimeout = setTimeout(GetPriceChange, 500); // call the 'getData' func after 0.5 sec everytime the slider is moved
 
         }
          })
 
-    function getData() {
+     function GetPriceChange() {
 
         $.ajax({
             method: "GET",
             url: '@Url.Action("FilterProducts", "Shop")',
             data: {
-                sortBy: '@Model.SortBy',
-                categoryId: '@Model.categoryId',
+                searchTerm: $("#searchTerm").val(),
+                sortBy: $("#sortBy").val(),
+                categoryId: $("#categoryId").val(),
                 // get the prices from 'priceSlider' func
                 minimumPrice: priceSlider.slider("values", 0),
                 maximumPrice: priceSlider.slider("values", 1)
@@ -148,8 +149,39 @@
 
                 alert("failed");
 
+            });
+    }
+
+
+
+    // clicking on sortBy or featured categories
+    $(".dataLink").click(function () {
+
+        var url = $(this).attr("data-href"); // get their url value from attribute 'data-href'
+
+        if (url != null && url != undefined) { // if url is not null and not undefined
+            GetDataUrl(url); // call GetData func and pass url
+        }
+
+    })
+
+
+    // get data from the url and pass the response to 'productsDiv'
+    function GetDataUrl(Url) {
+        $.ajax({
+            method: "GET",
+            url: Url,
+             })
+            .done(function (response) { // the response returns an html with values
+               $("#productsDiv").html(response); // display the response in 'productsDiv' where we are calling the 'FilterProducts' partial view
+
+
+                })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                alert("failed");
+
                });
              }
-
 
 </script>
