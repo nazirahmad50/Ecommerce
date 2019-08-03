@@ -1,5 +1,7 @@
 ﻿using Ecommerce.Services;
 using Ecommerce.Web.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,33 @@ namespace Ecommerce.Web.Controllers
 {
     public class ShopController : Controller
     {
+
+        // need both sign in manager and user manager to get user data
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         public ActionResult Index(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryId, int? pageNo, int? sortBy = 1)
         {
@@ -60,7 +89,7 @@ namespace Ecommerce.Web.Controllers
 
 
 
-
+        [Authorize] // only logged in user can access this action
         public ActionResult Checkout()
         {
             CheckoutViewModel model = new CheckoutViewModel();
@@ -76,7 +105,9 @@ namespace Ecommerce.Web.Controllers
 
                 model.CartProducts = ProductsService.Instance.GetProducts(model.CartProductIds); // get products from database based on the list of product ids
 
-
+                // first get the id of the current user logged in which is done through 'GetUserId()'
+                // then find that current user id in the database through the 'UserManager' and set it to prop 'User'
+                model.User = UserManager.FindById(User.Identity.GetUserId());
             }
 
             return View(model);

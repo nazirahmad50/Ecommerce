@@ -180,6 +180,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907311903230_InitialCreate.cs" />
+    <Compile Include="Migrations\201907311903230_InitialCreate.Designer.cs">
+      <DependentUpon>201907311903230_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908031856332_addNewPropToRegister.cs" />
+    <Compile Include="Migrations\201908031856332_addNewPropToRegister.Designer.cs">
+      <DependentUpon>201908031856332_addNewPropToRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -572,6 +581,14 @@
       <Project>{9c0c0774-10dc-434c-9ee5-d25e70cc2b0f}</Project>
       <Name>Ecommerce.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907311903230_InitialCreate.resx">
+      <DependentUpon>201907311903230_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908031856332_addNewPropToRegister.resx">
+      <DependentUpon>201908031856332_addNewPropToRegister.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

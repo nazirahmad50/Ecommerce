@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Entities;
+using Ecommerce.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Ecommerce.Web.ViewModels
         public List<Product> CartProducts { get; set; }
 
         public List<int> CartProductIds { get; set; }
+
+        public ApplicationUser User { get; set; }
     }
 
     public class ShopViewModel

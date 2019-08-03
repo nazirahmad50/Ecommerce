@@ -3,31 +3,96 @@
     ViewBag.Title = "Checkout";
 }
 
-<h2>Checkout</h2>
+<br />
+<div class="title-section">
+    <h2 class="title">@ViewBag.Title</h2>
+</div>
 
 
-@if (Model != null)
+@if (Model != null && Model.CartProducts != null && Model.CartProducts.Count > 0)
 {
-    if (Model.CartProducts != null && Model.CartProducts.Count > 0)
-    {
-        foreach (var item in Model.CartProducts)
-        {
-            var productQuantity = Model.CartProductIds.Where(x => x == item.ID).Count(); // get the count of where the ids in list 'CartProductIds' equal to the current product id
+    var productsCount = 1;
+    <section class="flat-row main-shop shop-slidebar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 order-md-2 mb-4">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Your cart</span>
+                    </h4>
+                    <ul class="list-group mb-3">
 
-            <div> Name: @item.Name - Price: @item.Price Quantity: @productQuantity Total Price: @(item.Price * productQuantity)</div>
 
-        }
 
-        <div>
-            Total: @Model.CartProducts.Sum(x => x.Price * Model.CartProductIds.Where(c => c == x.ID).Count()) <!--multiply the price of each pproduct by the count of its ids (quantity) -->
+                        @foreach (var item in Model.CartProducts)
+                        {
+
+                            var productQuantity = Model.CartProductIds.Where(x => x == item.ID).Count(); // get the count of where the ids in list 'CartProductIds' equal to the current product id
+
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div>
+                                    <h5 class="my-0">@productsCount - @item.Name - Qty: @productQuantity</h5>
+                                    <small class="text-muted">@(item.Description.Length > 100 ? item.Description.Substring(0, 99) : item.Description)</small>
+                                </div>
+                                <h6 class="text-muted" style="margin-top:10px;">Unit: $@item.Price - Total: @(item.Price * productQuantity) </h6>
+                            </li>
+
+                            productsCount++;
+
+                        }
+
+
+
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <!--multiply the price of each product by the count of its ids (quantity) -->
+                            <strong>$@Model.CartProducts.Sum(x => x.Price * Model.CartProductIds.Where(c => c == x.ID).Count()) </strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">Billing Details</h4>
+                    <form class="needs-validation" novalidate="">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="firstName">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="" value="@Model.User.Name" required="">
+                                <div class="invalid-feedback">
+                                    Valid first name is required.
+                                </div>
+                            </div>
+                  
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email">Email <span class="text-muted"></span></label>
+                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            <div class="invalid-feedback">
+                                Please enter a valid email address for shipping updates.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+     
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Place Order</button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-    }
-    else
-    {
-        <div>
-            No Products in cart
-        </div>
-
-    }
+    </section>
 }
+else
+{
+    <div>
+        No Products in cart
+    </div>
+}
+
+
