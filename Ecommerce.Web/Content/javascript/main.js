@@ -808,7 +808,6 @@
    	// Dom Ready
 	$(function() {
         removePreloader();
-        showLoader();
       goTop();
       parallax(); 
       flatRetinaLogo();
@@ -834,5 +833,36 @@
       flatIsotope();
       flatCarouselOwl();
       flatContentBox();
+      updateCartProducts(); // put this func in DOM ready so that it can be called everywhere in the website
    	});
 })(jQuery);
+
+function hideLoader() {
+    $(".loader").hide();
+    $("#loading-overlay").fade();
+};
+
+function showLoader() {
+
+    $(".loader").fadeIn();
+    $("#loading-overlay").show();
+};
+
+// will only update the cart count
+function updateCartProducts() {
+
+    var cartProducts;
+
+    var existingCookieData = $.cookie("cartProducts"); // get all the cookies in 'cartProducts'
+
+    if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) { // if existing cookies are not null, empty or undefined
+
+        cartProducts = existingCookieData.split("-"); // split those existing cookies at '-', e.g. without split 40-22-33, with split [40,22,33]
+
+    } else {
+        cartProducts = [];
+    }
+
+    // '.html' will modify the html of the element with the id 'cartProductCount' which is the cart count
+    $("#cartProductCount").html(cartProducts.length); // update cart count
+}

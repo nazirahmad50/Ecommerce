@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="add-to-cart text-center">
-                    <a href="#">ADD TO CART</a>
+                    <a class="productAddToCart" data-id="@item.ID">ADD TO CART</a>
                 </div>
                 <a href="#" class="like"><i class="fa fa-heart-o"></i></a>
             </li>
@@ -114,7 +114,39 @@
 
     })
 
+    
+     var products;
 
+     $(".productAddToCart").click(function () {
+
+         var existingCookieData = $.cookie("cartProducts"); // get all the cookies in 'cartProducts'
+
+         if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) { // if existing cookies are not null, empty or undefined
+
+             products = existingCookieData.split("-"); // split those existing cookies at '-', e.g. without split 40-22-33, with split [40,22,33]
+
+         } else {
+             products = [];
+         }
+
+         var productId = $(this).attr("data-id") // get the values from the attribute 'data-id")'
+
+         products.push(productId);
+
+         // first param is the name of the cookie
+         // for second param we can asign anything we want
+         // third param we assign a path
+         $.cookie("cartProducts", products.join("-"), { path: "/" }); // 'join' will join the values in the array as string, e.g. without join [1,2,3] - with join ["1-2-3"]
+
+         updateCartProducts(); // update the carts count
+
+         Swal.fire({
+             title: 'Done',
+             text: "Product Added To Cart!",
+             type: 'success',
+         });
+
+     });
 
 
 </script>
