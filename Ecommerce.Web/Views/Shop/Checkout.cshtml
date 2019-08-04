@@ -60,7 +60,7 @@
                                     Valid first name is required.
                                 </div>
                             </div>
-                  
+
                         </div>
 
                         <div class="mb-3">
@@ -79,14 +79,63 @@
                             </div>
                         </div>
 
-     
+
                         <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Place Order</button>
+                        <button id="placeOrderBtn" class="btn btn-primary btn-lg btn-block" type="button">Place Order</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+
+    $("#placeOrderBtn").click(function () {
+        $.ajax({
+
+            method: "POST", // By default the method is always 'GET'
+            url: '@Url.Action("PlaceOrder", "Shop")',
+            data: {
+                // will join the cart products ids by dash at every comma
+                // e.g. before join 5,3,6 after join 5-3-6
+                productIds: '@string.Join("-",Model.CartProductIds)'
+            }
+
+        })
+            .done(function (response) { //response will be json
+
+                if (response.success) { // if the 'success' prop from the json is set to true
+
+                    $.cookie("cartProducts", "", { path: "/" }); // empty the cookies
+                    updateCartProducts(); // and update the cart count
+
+                    Swal.fire({
+                        title: 'Done',
+                        text: "Your order has been placed!",
+                        type: 'success',
+                    }).then((result) => {
+                        window.location = '@Url.Action("Index", "Shop")'; // redirect the window location to the index shop page
+                    });
+
+                } else { // else if success is false
+
+                    Swal.fire({
+                        title: 'Failed',
+                        text: "Unable To Place Order!",
+                        type: 'warning',
+                    });
+                }
+
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+    </script>
+
+
 }
 else
 {

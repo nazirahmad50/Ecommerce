@@ -16,6 +16,7 @@ namespace Ecommerce.Entities
         public int ProductID { get; set; }
         public virtual Product Product { get; set; }
 
+        public int Quantity { get; set; }
 
     }
 }
