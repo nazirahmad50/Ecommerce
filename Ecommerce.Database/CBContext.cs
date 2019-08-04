@@ -15,10 +15,15 @@ namespace Ecommerce.Database
 
         }
 
+        // Create tables in database
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Config> Configurations { get; set; }
+
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
+
 
     }
 }
