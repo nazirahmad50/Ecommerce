@@ -1,0 +1,221 @@
+﻿@model Ecommerce.Web.ViewModels.OrdersViewModel
+
+
+
+<div>
+
+    <form method="post">
+
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <label>Search</label>
+                    <input class="form-control" id="searchTxt" name="UserID" />
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+
+                    <label>Action</label>
+
+                    <div class="row">
+                        <div class="col-md-4 pr-0">
+                            <button class="form-control btn btn-primary" type="button" id="searchBtn">Search</button>
+                        </div>
+
+
+                        <div class="col-md-4 pr-0">
+
+                            <button class="form-control btn btn-primary" type="button" id="resetBtn" href="@Url.Action("OrdersTable", "Order", new { pageNo = 1})">Reset</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+</div>
+
+
+<div>
+    <table id="productsTable" class="table table-striped">
+
+        <thead>
+
+            <!--Row tag-->
+            <tr>
+
+                <!--td is a cell-->
+                <th class="font-weight-bold">User ID</th>
+                <th class="font-weight-bold">Total Price</th>
+                <th class="font-weight-bold">Status</th>
+                <th class="font-weight-bold">Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @if (Model.Order != null && Model.Order.Count > 0)
+            {
+
+                foreach (var item in Model.Order)
+                {
+                    <tr>
+
+                        <td>@item.UserID</td>
+                        <td>@item.TotalAmount</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <!--'id' attribute should not hold data, so we created our own elemtent attribute called 'data-id' and passed data of the items id-->
+                            <a class="detailsBtn" data-id="@item.ID" type="button"  href="@Url.Action("Details", "Order", new { ID = item.ID})">Details</a>
+            
+
+                        </td>
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td class="text-danger" colspan="4">No Orders Found</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <!--Pagination-->
+    <div>
+
+        @if (Model.Pager != null && Model.Pager.TotalPages > 1) // if pages is not null
+        {
+            // if current page is more than 1
+            if (Model.Pager.CurrentPage > 1) // start pages
+            {
+                // show both first and previous page buttons
+                <button class="pageBtns" data-pageNo="1" href="@Url.Action("Index", "Order", new {userId = Model.UserID, status = Model.Status,  pageNo = 1 })">First</button>
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage - 1)" href="@Url.Action("Index", "Order", new {userId = Model.UserID, status = Model.Status,  pageNo = Model.Pager.CurrentPage - 1})" >Previous</button>
+
+            }
+
+            // loop through as long as the start page is less than or equal to the end page
+            for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++) // the middle pages
+            {
+                string activeClass = Model.Pager.CurrentPage == page ? " active bg-info" : string.Empty;
+
+                <button class=" @activeClass pageBtns" data-pageNo="@page" href="@Url.Action("Index", "Order", new {userId = Model.UserID, status = Model.Status,  pageNo = page })">@page</button>
+
+            }
+
+            // if the current page is less than the total pages, means if current page is not on the last page
+            if (Model.Pager.CurrentPage < Model.Pager.TotalPages) // the last pages
+            {
+                // show next and last page buttons
+                <button class="pageBtns" data-pageNo="@(Model.Pager.CurrentPage + 1)" href="@Url.Action("Index", "Order", new {userId = Model.UserID, status = Model.Status,  pageNo = Model.Pager.CurrentPage + 1})">Next</button>
+                <button class="pageBtns" data-pageNo="@Model.Pager.EndPage" href="@Url.Action("Index", "Order", new {userId = Model.UserID, status = Model.Status,  pageNo = Model.Pager.EndPage })">Last</button>
+
+
+
+            }
+
+
+        }
+
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $(".pageBtns").click(function () {
+        
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: '@Url.Action("OrdersTable", "Order")',
+            data: {
+                userId: '@Model.UserID',
+                status: '@Model.Status',
+                pageNo: $(this).attr("data-pageNo")
+            }
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#tableDiv").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+
+    // '$' Jquery reference
+    // '#' is used for ids and '.' is used for classes
+    $("#searchBtn").click(function () {
+        
+        var searchTxt = $("#searchTxt").val();
+
+        $.ajax({
+
+            method: "GET", // By default the method is always 'GET'
+            url: '@Url.Action("OrdersTable", "Order")',
+            data: {
+                status: searchTxt
+
+            } 
+
+        })
+            .done(function (response) { // the response returns an html with values
+
+                // so set vales from the response which comes in the form of html with its values to the 'tableDiv' html
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+
+     $("#resetBtn").click(function () {
+
+        var searchTxt = "";
+
+        $.ajax({
+
+            method: "GET",
+            // use UrlHelper method called 'Action' which takes the action first and then the controller
+            // purpose of this is that we can customize this url like change it to '/Categories/All' which is done in 'RouteConfig'
+            url: '@Url.Action("OrdersTable", "Order")',
+            data: { search: searchTxt }
+
+        })
+            .done(function (response) {
+
+                $("#tableDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+
+
+     })
+
+    </script>

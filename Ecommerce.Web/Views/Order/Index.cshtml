@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h2 class="text-center">ORDERS</h2>
+
+
+
+<div class="container">
+
+    <div id="tableDiv">
+        <!--This 'RenderAction' will render the 'ProductsTable' view in this Index View -->
+        @{
+
+
+            Html.RenderAction("OrdersTable");
+
+        }
+    </div>
+
+    <hr /> <!--horizontle line-->
+
+    <div id="actionContainer">
+
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function focusAction(controlFocusTo) {
+        $("html, body").animate({
+            scrollTop: $("#" + controlFocusTo).offset().top - 100
+        }, 1000);
+    }
+
+</script>
+

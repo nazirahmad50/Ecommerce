@@ -15,6 +15,7 @@ namespace Ecommerce.Web.Controllers
     {
 
         // need both sign in manager and user manager to get user data
+        // we cannot access the User table in database directly like using context so we have to use SignInManager and UserManager
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
